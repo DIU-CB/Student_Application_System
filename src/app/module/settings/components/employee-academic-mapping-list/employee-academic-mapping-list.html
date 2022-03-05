@@ -1,0 +1,35 @@
+
+<circle-loader *ngIf="elableLoader"></circle-loader>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Program</th>
+            <th>Role</th>
+            <th>Application Type</th>
+            <th>Faculty</th>
+            <th>Shift</th>
+            <th>Campus</th>
+            <th>IsActive</th>
+            <th>Can Do Anything</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of mappingList; let i = index">
+            <td>{{item?.employee?.name}}</td>
+            <td>{{item?.program?.name}}</td>
+            <td>{{item?.role?.name}}</td>
+            <td>{{item?.applicationType?.name}}</td>
+            <td>{{item?.faculty?.name}}</td>
+            <td>{{item?.shift?.name}}</td>
+            <td>{{item?.campus?.name}}</td>
+            <td>{{item?.isActive}}</td>
+            <td>{{item?.canDoAnything}}</td>
+            <td>
+                <a mat-button color="primary" routerLink="/dashboard/settings/employee-map-edit/{{item.id}}">Edit</a>
+                <!-- <button mat-button color="warn" (click)="DeleteDialog(item)">Delete</button> -->
+            </td>
+        </tr>
+    </tbody>
+</table>

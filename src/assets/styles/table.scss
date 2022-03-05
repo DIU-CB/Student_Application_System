@@ -1,0 +1,19 @@
+
+.mat-table{
+    display: block !important;
+}
+.mat-header-row{
+    min-height: 56px;
+}
+.mat-row{
+    min-height: 48px;
+}
+.mat-header-row, .mat-row{
+    padding: 0 24px;
+}
+
+.mat-cell, .mat-header-cell{
+    flex: 1;
+    overflow: hidden;
+    word-wrap: break-word;
+}

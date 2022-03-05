@@ -1,0 +1,13 @@
+$red: #800000;
+$warning: #ff8000;
+$white: #fff;
+
+.warning{
+    padding: 7px;
+    background-color: $warning;
+    color: $white;
+}
+.danger{
+    @extend .warning;
+    background-color: $red;
+}

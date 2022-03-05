@@ -1,0 +1,76 @@
+<form [formGroup]="searchForm" fxLayout="column" fxLayoutGap="10px">
+
+    <!-- <mat-form-field>
+        <mat-select formControlName="applicationTypeId" placeholder="Application Type">
+            <mat-option *ngFor="let item of applicationTypes.getApplicationTypes | async" [value]="item.id">
+                {{item.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field> -->
+    
+    <app-application-type-select formControlName="applicationTypeId"></app-application-type-select>
+ 
+    <mat-form-field>
+        <mat-select formControlName="applicationStatusId" placeholder="Status">
+            <mat-option *ngFor="let item of commonQuery.getStatus | async" [value]="item.id">
+                {{item.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <!-- <app-status-select formControlName="applicationStatusId"></app-status-select> -->
+    
+ 
+    <!-- <mat-form-field>
+        <mat-select formControlName="programId" placeholder="Program">
+            <mat-option *ngFor="let item of commonQuery.getProgram | async" [value]="item.id">
+                {{item.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field> -->
+
+    <app-program-select formControlName="programId"></app-program-select>
+ 
+    <!-- <mat-form-field>
+        <mat-select formControlName="semesterId" placeholder="Semester">
+            <mat-option *ngFor="let item of commonQuery.getCampus | async" [value]="item.id">
+                {{item.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field> -->
+
+    <app-semester-select formControlName="semesterId"></app-semester-select>
+
+
+
+    <!-- <mat-form-field>
+        <mat-select formControlName="campusId" placeholder="Campus">
+            <mat-option *ngFor="let item of commonQuery.getCampus | async" [value]="item.id">
+                {{item.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field> -->
+    <app-campus-select formControlName="campusId"></app-campus-select>
+
+    <!-- <mat-form-field>
+        <mat-select formControlName="shiftId" placeholder="Shift">
+            <mat-option *ngFor="let item of commonQuery.getShift | async" [value]="item.id">
+                {{item.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>     -->
+    <app-shift-select formControlName="shiftId"></app-shift-select>
+    <mat-form-field>
+        <input matInput formControlName="studentId" placeholder="Student Id">
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <button mat-raised-button color="primary" [disabled]="searchForm.invalid" (click)="Submit()">Submit</button>
+        <button mat-raised-button color="warn" (click)="Reset()">Reset</button>
+    </div>
+
+
+    <!-- <pre>
+        {{searchForm.value | json}}
+    </pre> -->
+
+</form>

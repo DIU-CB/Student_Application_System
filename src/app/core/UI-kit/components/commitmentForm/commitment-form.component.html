@@ -1,0 +1,40 @@
+<mat-card>
+        <div [formGroup]="commitmentForm" fxLayout="column">
+            
+            <p>
+                <strong>Commitment: </strong>{{detailsData?.studentCommitment?.commitment}}
+            </p>
+            <!-- <mat-form-field>
+                <input matInput formControlName="duesUpToLastSemester" placeholder="duesUpToLastSemester">
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput formControlName="currentInstallment" placeholder="currentInstallment">
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput formControlName="totalPayable" placeholder="totalPayable">
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput formControlName="paid" placeholder="paid">
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput formControlName="duesUpToMidOrFinalOrReg" placeholder="duesUpToMidOrFinalOrReg">
+              </mat-form-field>
+              <p>
+                    <strong>Year: </strong>{{detailsData.studentCommitment?.year}}
+                    <strong>semesterId: </strong>{{detailsData.studentCommitment?.semesterId}}
+                </p>
+                <mat-form-field>
+                    <textarea matInput formControlName="remarks" placeholder="Textarea"></textarea>
+                </mat-form-field>
+                <p>
+                    <strong>By: </strong>{{detailsData.studentCommitment?.remarksByEmployee}}
+                </p> -->
+        </div>
+        <!-- <pre>
+            {{commitmentForm.value|json}}
+        </pre> -->
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <button mat-raised-button color="primary" (click)="SaveCommitment()">Save Commitment</button>
+        </div>
+
+    </mat-card>

@@ -1,0 +1,35 @@
+<div *ngIf="ReportSource?.length == 0">
+  No Commitment data found
+</div>
+<table class="table" *ngIf="ReportSource?.length > 0">
+    <thead>
+        <tr>
+            <th style="width: 15%;">Program</th>
+            <th style="width: 5%;">Student ID</th>
+            <th style="width: 10%;">Application</th>
+            <th style="width: 5%;">Semester</th>
+            <th style="width: 5%;">Dues Up To Last Semester</th>
+            <th style="width: 5%;">Current Installment</th>
+            <th style="width: 5%;">Total Payable</th>
+            <th style="width: 5%;">Paid</th>
+            <th style="width: 5%;">Dues Up To Mid/Final/Reg</th>
+            <th style="width: 40%;">Comitments</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of ReportSource; let i = index;">
+            <td>{{item.programName}}</td>
+            <td>{{item.studentId}}</td>
+            <td>{{item.applicationName}}</td>
+            <td>{{item.semesterName}}</td>
+            <td>{{item.duesUpToLastSemester}}</td>
+            <td>{{item.currentInstallment}}</td>
+            <td>{{item.totalPayable}}</td>
+            <td>{{item.paid}}</td>
+            <td>{{item.duesUpToMidOrFinalOrReg}}</td>
+            <td>
+                <app-commitment-view [commitmentList]="item.commitments"></app-commitment-view>
+              </td>
+        </tr>
+    </tbody>
+</table>

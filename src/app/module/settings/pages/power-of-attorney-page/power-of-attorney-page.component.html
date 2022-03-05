@@ -1,0 +1,60 @@
+<mat-toolbar class="page-toolbar">  
+  <mat-toolbar-row>
+      <div class="mat-h4">
+          <a href="#">Dashboard</a> / <a href="#">Application</a>
+      </div>
+      </mat-toolbar-row>
+      <mat-toolbar-row class="page-title">
+          Power Of Attorney
+      </mat-toolbar-row>
+</mat-toolbar>
+
+<div fxLayout="row" fxLayoutGap="10px" class="layout-gap">
+  <mat-card fxFlex="50">
+      <mat-card-title>Power of Attorney Given To</mat-card-title>
+      <mat-list>
+        <mat-list-item *ngFor="let item of poaList; let i = index;"> 
+            <h4 mat-line>{{item.powerOfAttorneyToUser?.userFullName}}</h4>
+            <p mat-line> {{item.powerOfAttorneyToUser.email}} </p>
+            <p mat-line>App: {{item.application?.name}} </p>
+            <button mat-raised-button (click)="DeletePerson(item)">Delete</button>
+        </mat-list-item>
+      </mat-list>
+    <!-- <pre>
+      {{poaList|json}}
+    </pre> -->
+  </mat-card>
+  <mat-card fxFlex="50">
+    <form [formGroup]="poaForm" novalidate>
+        <mat-form-field style="width: 100%;">
+          <mat-select placeholder="Application Type" formControlName="applicationId">
+            <mat-option *ngFor="let item of applicationList" [value]="item.id">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- <app-employee-autocomplete-through
+            [priamryId]="poaForm.get('powerOfAttorneyFromUserId')"
+            [priamryKey]=" 'id' "
+            placeholder="Power Of Attorney From User"
+            [itemControl]="poaForm.get('powerOfAttorneyFromUser')">
+        </app-employee-autocomplete-through> -->
+
+        <app-employee-autocomplete-through
+            [priamryId]="poaForm.get('userId')"
+            [priamryKey]=" 'id' "
+            placeholder="Power Of Attorney To Employee"
+            [itemControl]="poaForm.get('user')">
+        </app-employee-autocomplete-through>
+
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+          <button mat-raised-button color="warn" [disabled]="poaForm.invalid" (click)="Submit()">Submit</button>
+        </div>
+
+    </form>
+    <!-- <pre>
+      {{poaForm.value|json}}
+    </pre> -->
+  </mat-card>
+</div>

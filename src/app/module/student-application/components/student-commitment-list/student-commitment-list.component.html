@@ -1,0 +1,33 @@
+
+<circle-loader *ngIf="elableLoader"></circle-loader>
+<mat-error *ngIf="studentCommitmentList?.length == 0">
+    Not found approved application
+</mat-error>
+<table class="table" *ngIf="studentCommitmentList?.length > 0">
+    <thead>
+        <tr>
+            <th>SL. No.</th>
+            <th>Commitment</th>
+            <th>Semester</th>
+            <th>remarks</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of studentCommitmentList; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{item?.commitment}}</td>
+            <td>{{item?.semesterName}}</td>
+            <td>{{item?.remarks}}</td>
+            <td>
+                <a mat-button color="primary" routerLink="/dashboard/student-application/print/{{item.applicationId}}">View App.</a>
+                <!-- <button mat-button color="primary" routerLink="/dashboard/student-application/print/{{item.id}}">Print</button> -->
+                <!-- <button *ngIf="item?.applicationStatusId == '1' " mat-button color="warn" (click)="DeleteDialog(item)">Delete</button> -->
+            </td>
+        </tr>
+    </tbody>
+</table> 
+
+<!-- <pre>
+    {{studentCommitmentList|json}}
+</pre> -->

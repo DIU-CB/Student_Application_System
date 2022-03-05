@@ -1,0 +1,90 @@
+
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex="20">
+        <form [formGroup]="searchForm" fxLayout="column" fxLayoutGap="10px">
+            <mat-form-field>
+                <input matInput formControlName="studentId" placeholder="Student Id">
+            </mat-form-field>
+
+            <!-- <mat-form-field>
+                <mat-select formControlName="programId" placeholder="Program">
+                    <mat-option *ngFor="let item of programList | async" [value]="item.id">
+                        {{item.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> -->
+            <app-program-select formControlName="programId"></app-program-select>
+
+            <!-- <mat-form-field>
+                <mat-select formControlName="semesterId" placeholder="Semester">
+                    <mat-option *ngFor="let item of semesterList | async" [value]="item.id">
+                        {{item.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> -->
+            <app-semester-select formControlName="semesterId"></app-semester-select>
+
+            <!-- <mat-form-field>
+                <mat-select formControlName="campusId" placeholder="Campus">
+                    <mat-option *ngFor="let item of campusList | async" [value]="item.id">
+                        {{item.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> -->
+            <app-campus-select formControlName="campusId"></app-campus-select>
+
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                <button mat-raised-button color="primary" [disabled]="searchForm.invalid" (click)="Search()">Submit</button>
+                <button mat-raised-button color="warn" (click)="Reset()" >Reset</button>
+            </div>
+            <!-- <pre>
+                {{searchForm.value|json}}
+            </pre> -->
+        </form>
+    </div>
+    <div fxFlex="80" id="print">
+        <h2>Dues Report</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Program</th>
+                    <th>Campus</th>
+                    <th>Semester</th>
+                    <th>Dues Up To Last Semester</th>
+                    <th>Current Installment</th>
+                    <th>Total Payable</th>
+                    <th>Paid</th>
+                    <th>Dues Up To Mid/Final/Reg</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of ReportList; let i = index;">
+                <!-- <tr *ngFor="let item of ReportList|async; let i = index;"> -->
+                    <td>{{item.programName}}</td>
+                    <td>{{item.campusName}}</td>
+                    <td>{{item.semesterName}}</td>
+                    <td>{{item.duesUpToLastSemester}}</td>
+                    <td>{{item.currentInstallment}}</td>
+                    <td>{{item.totalPayable}}</td>
+                    <td>{{item.paid}}</td>
+                    <td>{{item.duesUpToMidOrFinalOrReg}}</td>
+                </tr>
+                <tr>
+                <!-- <tr *ngFor="let item of ReportList|async; let i = index;"> -->
+                    <th colspan="3">Total</th>
+                    <th>{{ ReportList | sumOf: 'duesUpToLastSemester'}}</th>
+                    <th>{{ ReportList | sumOf: 'currentInstallment'}}</th>
+                    <th>{{ ReportList | sumOf: 'totalPayable'}}</th>
+                    <th>{{ ReportList | sumOf: 'paid'}}</th>
+                    <th>{{ ReportList | sumOf: 'duesUpToMidOrFinalOrReg'}}</th>
+                </tr>
+            </tbody>
+        </table>
+        <!-- <pre>
+            {{ReportList|json}}
+        </pre> -->
+    </div>
+    <button mat-mini-fab class="ui-float-button" (click)="print.printElem('print')">
+        <i class="material-icons">print</i>
+    </button>
+</div>

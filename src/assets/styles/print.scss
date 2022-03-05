@@ -1,0 +1,18 @@
+
+
+.visible-print{
+    display: none !important;
+}
+
+.hidden-print{
+    display: block !important;
+}
+
+@media print {
+    .visible-print{
+        display: block !important;
+    }
+    .hidden-print{
+        display: none !important;
+    }
+}

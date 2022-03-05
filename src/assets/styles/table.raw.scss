@@ -1,0 +1,29 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,{
+    color: rgb(128, 128, 128)
+ }
+
+.table, .table th, .table td {
+    border: 1px solid rgb(231, 231, 231);
+ }
+
+ .table th {
+    padding: 5px;
+    text-align: center;
+ }
+
+.table td {
+    padding: 5px;
+ }
+
+.bottom-border-none{
+    border-bottom: none !important;
+}
+
+.top-border-none{
+    border-top: none !important;
+}

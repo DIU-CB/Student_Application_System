@@ -1,0 +1,12 @@
+.page-toolbar{
+    mat-toolbar-row{
+     height: 32px;
+     line-height: 32px;
+     .mat-h4{
+        margin: 0;
+     }
+     .page-title{
+         font-size: 0.8em !important;
+     }
+    }
+}

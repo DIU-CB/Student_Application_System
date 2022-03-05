@@ -1,0 +1,26 @@
+
+$notifyBGDanger: rgb(255, 71, 71);
+$notifyBGSuccess: rgb(4, 126, 0);
+$notifyBGWarning: rgb(255, 194, 114);
+
+$textColorBlack: rgb(43,43,43);
+
+.error-snackbar {
+    background-color: $notifyBGDanger !important;
+}
+
+.success-snackbar {
+    background-color: $notifyBGSuccess !important;
+}
+
+.global-notification{
+    @extend .error-snackbar;
+    color: white;
+    padding: 5px 10px;
+}
+
+.global-warning{
+    background-color: $notifyBGWarning;
+    color: $textColorBlack;
+    padding: 5px 10px;
+}

@@ -1,0 +1,47 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+@import "assets/theme/theme";
+@import "assets/styles/form.scss";
+@import "assets/styles/table.scss";
+@import "assets/styles/table.raw.scss";
+@import "assets/styles/button.scss";
+@import "assets/styles/matExpansion.scss";
+@import "assets/styles/print.scss";
+@import "assets/styles/toolbar.scss";
+@import "assets/styles/card.scss";
+@import "assets/styles/notification.scss";
+@import "assets/styles/typography.scss";
+
+.wrapper, html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Roboto,sans-serif;
+}
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.app-float-button{
+    position: fixed !important;
+    bottom: 1.5rem;
+    right: 2.5rem;
+}
+
+
+
+.ui-float-button{
+    position: fixed !important;
+    bottom: 1.5rem;
+    right: 1.5rem;
+}
+
+.hide{
+    display: none;
+}
+
+.layout-gap{
+    padding-left: 10px;
+    padding-right: 10px;
+}

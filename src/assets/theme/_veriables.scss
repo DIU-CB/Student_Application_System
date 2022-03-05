@@ -1,0 +1,70 @@
+@import '~@angular/material/theming';
+//@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+
+@include mat-core();
+//Cyan Light
+$portal-teal-primary: mat-palette($mat-cyan, 900);
+$portal-teal-accent: mat-palette($mat-red, 900);
+$portal-teal-warn: mat-palette($mat-orange, 900);
+$portal-teal-theme: mat-light-theme($portal-teal-primary, $portal-teal-accent, $portal-teal-warn);
+//Cyan Dark
+$portal-teal-dark-primary: mat-palette($mat-cyan, 900);
+$portal-teal-dark-accent: mat-palette($mat-red, A100);
+$portal-teal-dark-warn: mat-palette($mat-deep-orange, 900);
+$portal-teal-dark-theme: mat-dark-theme($portal-teal-dark-primary, $portal-teal-dark-accent, $portal-teal-dark-warn);
+
+//Purple Light
+$portal-purple-primary: mat-palette($mat-purple, 500);
+$portal-purple-accent: mat-palette($mat-cyan, 300);
+$portal-purple-warn: mat-palette($mat-orange, 900);
+$portal-purple-theme: mat-light-theme($portal-purple-primary, $portal-purple-accent, $portal-purple-warn);
+
+//Purple Dark
+$mat-cosmic: (
+  50: #efebff,//351,8,100
+  100: #d8ccff,//351,20,100
+  200: #a199f0,//0,36,94
+  300: #8e73e5,//0,50,90
+  400: #754ff0,//1,67,94
+  500: #6236f5,//7,78,96
+  600: #5e35e5,//1,77,90
+  700: #552fd4,//0,78,83
+  800: #4d28c7,//0,80,78
+  900: #401cb8,//0,85,72
+  A100: #9d80ff,//5,50,100
+  A200: #7a52ff,//0,68,100
+  A400: #4d17ff,//348,91,100
+  A700: #3200d6,//0,100,84
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $light-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text,
+  )
+);
+$portal-purple-dark-primary: mat-palette($mat-cosmic, A200);
+$portal-purple-dark-accent: mat-palette($mat-purple, 500);
+$portal-purple-dark-warn: mat-palette($mat-orange, 900);
+// $custom-theme: create-wonky-theme($portal-purple-dark-primary, $portal-purple-dark-accent, $portal-purple-dark-warn);
+$portal-purple-dark-theme: mat-dark-theme($portal-purple-dark-primary, $portal-purple-dark-accent, $portal-purple-dark-warn);
+
+//Red Light
+$portal-red-primary: mat-palette($mat-red, 700);
+$portal-red-accent: mat-palette($mat-light-blue, 900);
+$portal-red-warn: mat-palette($mat-orange, 900);
+$portal-red-theme: mat-light-theme($portal-red-primary, $portal-red-accent, $portal-red-warn);
+//Red Dark
+$portal-red-dark-primary: mat-palette($mat-red, 900);
+$portal-red-dark-accent: mat-palette($mat-light-blue, 500);
+$portal-red-dark-warn: mat-palette($mat-orange, 900);
+$portal-red-dark-theme: mat-dark-theme($portal-red-dark-primary, $portal-red-dark-accent, $portal-red-dark-warn);

@@ -1,0 +1,16 @@
+@import 'veriables';
+//@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+// @import '~@angular/material/theming';
+// @include mat-core();
+.purple-theme{
+  @include angular-material-theme($portal-purple-theme);
+}
+
+.purple-dark-theme{
+  
+  @include angular-material-theme($portal-purple-dark-theme);
+  // @include angular-material-theme($custom-theme);
+  // .error-snackbar {
+  //     background-color: $portal-purple-dark-accent !important;
+  // }
+}

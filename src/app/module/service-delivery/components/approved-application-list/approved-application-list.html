@@ -1,0 +1,55 @@
+
+
+<mat-error *ngIf="dataSource?.length == 0">
+        Application not found!!
+</mat-error>
+<table class="table" *ngIf="dataSource?.length > 0">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Application Type</th>
+            <!-- <th>Student ID</th> -->
+            <!-- <th>Status</th> -->
+            <th>&nbsp;</th>
+            <!-- <th>Exam</th>
+            <th>Account</th>
+            <th>Coordination</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of dataSource; let i = index">
+            <td>{{ (i + 1) + (10 * (CurrentPage - 1) ) }}</td>
+            <td>
+                <span class="text-bold">
+                    <a routerLink="./../application-details/{{item.id}}">{{item?.applicationType?.name}}</a>
+                </span>
+                <br>
+                <small><span>Applied On</span>: {{item.appliedOn|date: 'dd-MM-yyyy'}} | <span>Updated</span>: {{item.updatedOn|date: 'dd-MM-yyyy'}}</small>
+                <br>
+                <small>Student Id: {{item?.studentId}}</small>
+                <!-- <mat-divider></mat-divider>
+                <a mat-button color="primary" routerLink="./../application-details/{{item.id}}">Details</a> -->
+                <!-- <button mat-button color="accent" (click)="serviceDeliveryConf.Deliver(item.id, item.rowVersion)">Deliver</button> -->
+            </td>
+            <!-- <td>
+                {{item?.studentId}}
+            </td>
+            <td>
+                <a mat-button color="primary" routerLink="./../application-details/{{item.id}}">Details</a>
+                <button mat-button color="accent" (click)="serviceDeliveryConf.Deliver(item.id, item.rowVersion)">Deliver</button>
+            </td> -->
+            <td fxLayout="column">
+                <button mat-button fxFlex [disabled]="item.examDecision" color="accent" (click)="SaveDeliverFromExam(item.id)">
+                    <span>Exam</span>
+                </button>
+                <span class="button-status"><small *ngIf="item.examDecision">Submited By: {{item.examDecision}}</small></span>
+                <mat-divider></mat-divider>
+                <button mat-button fxFlex [disabled]="item.accountsDecision" color="primary" (click)="SaveDeliverFromAccounts(item.id)">Accounts</button>
+                <span class="button-status"><small *ngIf="item.accountsDecision">Submited By: {{item.accountsDecision}}</small></span>
+                <mat-divider></mat-divider>
+                <button mat-button fxFlex [disabled]="item.coordinationOfficeDecision"  color="warn" (click)="SaveDeliverFromCoordinationOffice(item.id)">Coordination</button>
+                <span class="button-status"><small *ngIf="item.coordinationOfficeDecision">Submited By: {{item.coordinationOfficeDecision}}</small></span>
+            </td>
+        </tr>
+    </tbody>
+</table>

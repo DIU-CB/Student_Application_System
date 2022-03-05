@@ -1,0 +1,66 @@
+
+<!-- <div class="example-container">
+    <mat-toolbar class="page-toolbar">  
+        <mat-toolbar-row>
+            <div class="mat-h4">
+                <a href="#">Dashboard</a> / <a href="#">Application(s)</a>
+            </div>
+        </mat-toolbar-row>
+        <mat-toolbar-row class="page-title">
+            Application(s) to Dispatch
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-sidenav-container class="example-sidenav-container">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [opened]="mobileQuery.matches"
+                    [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+                    <app-coordination-application-search-form (GetValue)="Search($event);" ></app-coordination-application-search-form>
+        </mat-sidenav>
+        <mat-sidenav-content fxLayout="column">
+            
+                {{mobileQuery.matches}}
+                <circle-loader *ngIf="elableLoader"></circle-loader>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <button mat-icon-button (click)="snav.toggle()"><mat-icon>search</mat-icon></button>
+                    <mat-form-field>
+                        <mat-select placeholder="Page Size" [(ngModel)]="pageSize">
+                            <mat-option *ngFor="let page of ['5', '10', '20', '50', '100']" [value]="page">
+                            {{page}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <app-coordination-application-list [dataSource]="ApplicationList"></app-coordination-application-list>
+                    <app-x-pagination *ngIf="ApplicationList?.length > 0" [dataSource]="xPagination" (pageSuccess)="Success($event)"></app-x-pagination>
+
+                </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div> -->
+
+<div fxLayout="column" fxLayoutGap="10px">
+    <mat-toolbar class="page-toolbar">  
+        Application(s) to Dispatch
+    </mat-toolbar>
+    <div fxLayout="row" fxLayoutGap="10px" class="layout-gap">
+        <div fxFlex="25" fxFlex.xs="30" *ngIf="searchOpen || !mobileQuery.matches">
+            <app-coordination-application-search-form (GetValue)="Search($event)" ></app-coordination-application-search-form>
+        </div>
+        <div fxFlex="75" fxFlex.xs="100">
+            <circle-loader *ngIf="elableLoader"></circle-loader>
+            <div fxLayout="row" [fxLayoutAlign]="mobileQuery.matches ? 'space-between center ': 'end center'">
+                <button mat-icon-button *ngIf="mobileQuery.matches" (click)="searchOpen = !searchOpen"><mat-icon>search</mat-icon></button>
+                
+                <mat-form-field>
+                    <mat-select placeholder="Page Size" [(ngModel)]="pageSize">
+                        <mat-option *ngFor="let page of ['5', '10', '20', '50', '100']" [value]="page">
+                        {{page}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <app-coordination-application-list [dataSource]="ApplicationList"></app-coordination-application-list>
+            <app-x-pagination *ngIf="ApplicationList?.length > 0" [dataSource]="xPagination" (pageSuccess)="Success($event)"></app-x-pagination>
+        </div>
+    </div>
+</div>

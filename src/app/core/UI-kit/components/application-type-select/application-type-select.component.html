@@ -1,0 +1,7 @@
+<mat-form-field fxFlex>
+    <mat-select placeholder="Application Type" (selectionChange)="setValue($event)">
+        <mat-option *ngFor="let item of applicationTypesService.getApplicationTypes | async" [value]="item.id">
+            {{item.name}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>

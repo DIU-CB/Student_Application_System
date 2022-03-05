@@ -1,0 +1,38 @@
+<form [formGroup]="searchForm" fxLayout="column" fxLayoutGap="10px">
+
+    <!-- <mat-form-field>
+        <mat-select formControlName="applicationTypeId" placeholder="Application Type">
+            <mat-option *ngFor="let item of applicationTypeList | async" [value]="item.id">
+                {{item.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field> -->
+    <app-application-type-select formControlName="applicationTypeId"></app-application-type-select>
+
+    <mat-form-field>
+        <input matInput formControlName="studentId" placeholder="Student Id">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-select formControlName="campusId" placeholder="Select Campus">
+            <mat-option *ngFor="let campus of  CampusList" [value]="campus.value">
+                {{campus.viewValue}}
+              
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <app-semester-select formControlName="semesterId"></app-semester-select>
+ 
+
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <button mat-raised-button color="primary" [disabled]="searchForm.invalid" (click)="Submit()">Submit</button>
+        <button mat-raised-button color="warn" (click)="Reset()">Reset</button>
+    </div>
+
+
+    <!-- <pre>
+        {{searchForm.value | json}}
+    </pre> -->
+
+</form>

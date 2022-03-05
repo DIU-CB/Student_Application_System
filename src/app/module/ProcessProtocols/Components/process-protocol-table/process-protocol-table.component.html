@@ -1,0 +1,28 @@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>App. Type</th>
+            <th>Campus</th>
+            <th>Created By</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of listData; let i = index;">
+            <td>{{item.applicationType?.name}}</td>
+            <td>{{item.campus?.name}}</td>
+            <td>{{item.createdByEmployee?.name}}</td>
+            <td>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <a mat-button color="primary" routerLink="/dashboard/process-protocol/edit/{{item.id}}">Edit</a>
+                    <a mat-button color="primary" routerLink="/dashboard/process-protocol/details/{{item.id}}">View</a>
+                    <button mat-button color="warn" (click)="Delete(item.id, i)">Delete</button>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<!-- <pre>
+    {{listData|json}}
+</pre> -->

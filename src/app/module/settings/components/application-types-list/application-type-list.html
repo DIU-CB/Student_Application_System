@@ -1,0 +1,28 @@
+
+<circle-loader *ngIf="elableLoader"></circle-loader>
+<mat-error *ngIf="applicationTypeList?.length == 0">
+    Application Not found
+</mat-error>
+<table class="table" *ngIf="applicationTypeList?.length > 0">
+    <thead>
+        <tr>
+            <th style="width: 10%;">SL. No.</th>
+            <th style="width: 30%;">Name</th>
+            <th style="width: 70%;">Description</th>
+            <th style="width: 10%;">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of applicationTypeList; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{item?.name}}</td>
+            <td>
+                {{item?.description}}
+            </td>
+            <td>
+                <a mat-button color="primary" routerLink="./../app-type-edit/{{item.id}}">Edit</a>
+                <button mat-button color="warn" (click)="DeleteDialog(item)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

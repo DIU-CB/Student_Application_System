@@ -1,0 +1,15 @@
+
+<div fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="dataSource">
+  <div fxLayout="row" fxLayoutGap="10px">
+      <mat-progress-spinner *ngIf="!loaderDisabled" diameter="20" mode="indeterminate"></mat-progress-spinner>
+      <div class="mat-h5">Total: {{Range().from}} to 
+        <span>{{Range().to}}</span>
+         of 
+        <span>{{dataSource?.TotalCount}} </span>
+      </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="15px">
+    <button color="primary" mat-button [disabled]="!loaderDisabled" (click)="Prev()"[disabled]="dataSource?.PreviousPageLink == null">Prev.</button>
+    <button color="warn" mat-button [disabled]="!loaderDisabled" (click)="Next()"[disabled]="dataSource?.NextPageLink == null">Next</button>
+  </div>
+</div>

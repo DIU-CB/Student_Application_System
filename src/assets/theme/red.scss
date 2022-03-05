@@ -1,0 +1,10 @@
+@import 'veriables';
+//@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+
+.red-theme{
+  @include angular-material-theme($portal-red-theme);
+}
+
+.red-dark-theme{
+  @include angular-material-theme($portal-red-dark-theme);
+}

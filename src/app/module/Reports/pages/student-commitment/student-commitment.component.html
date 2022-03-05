@@ -1,0 +1,38 @@
+
+<div fxLayout="column" fxLayoutGap="10px">
+  <div fxLayout="row">
+      <div fxFlex="60">
+          <h2>Student Commitment(s)</h2>
+      </div>
+      <div fxFlex="40">
+          <form [formGroup]="searchForm" fxLayout="row" fxLayoutGap="10px">
+              <mat-form-field>
+                  <mat-label>Student Id</mat-label>
+                  <input matInput formControlName="studentId" placeholder="like 000-00-000">
+              </mat-form-field>
+              
+              <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                  <button mat-raised-button color="primary" [disabled]="searchForm.invalid" (click)="Search()">Submit</button>
+                  <button mat-raised-button color="warn" (click)="Reset()" >Reset</button>
+              </div>
+              <!-- <pre>
+                  {{searchForm.value|json}}
+              </pre> -->
+          </form>
+      </div>
+  </div>
+  <div fxFlex="80" id="print">
+    <!-- <pre>
+      {{CommitmentList | json}}
+    </pre> -->
+    <div *ngIf="!CommitmentList">Provide student id and press the search button</div>
+    <mat-error *ngIf="CommitmentList?.length == 0">
+      No Commitments data found, provide student id and press the search button
+    </mat-error>
+    <app-student-commitment-report-table [ReportSource]="CommitmentList" *ngIf="CommitmentList?.length > 0"></app-student-commitment-report-table>
+      
+  </div>
+  <button mat-mini-fab class="ui-float-button" (click)="print.printElem('print')">
+      <i class="material-icons">print</i>
+  </button>
+</div>

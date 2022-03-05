@@ -1,0 +1,28 @@
+
+
+    <mat-toolbar class="page-toolbar">  
+        Application(s) to Proceed
+    </mat-toolbar>
+
+        <div fxLayout="row" fxLayoutGap="10px" class="layout-gap">
+            <div fxFlex="25" fxFlex.xs="30" *ngIf="searchOpen || !mobileQuery.matches">
+                <app-authority-application-search-form (GetValue)="Search($event)" ></app-authority-application-search-form>
+            </div>
+            <div fxFlex="75" fxFlex.xs="100">
+                <circle-loader *ngIf="enableLoader"></circle-loader>
+                <div fxLayout="row" [fxLayoutAlign]="mobileQuery.matches ? 'space-between center ': 'end center'">
+                    <button mat-icon-button *ngIf="mobileQuery.matches" (click)="searchOpen = !searchOpen"><mat-icon>search</mat-icon></button>
+                    <mat-form-field>
+                        <mat-select placeholder="Page Size" [(ngModel)]="pageSize">
+                            <mat-option *ngFor="let page of ['5', '10', '20', '50', '100']" [value]="page">
+                            {{page}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <app-authority-application-list [dataSource]="ApplicationList"></app-authority-application-list>
+                <app-x-pagination *ngIf="ApplicationList?.length > 0" [dataSource]="xPagination" (pageSuccess)="Success($event)"></app-x-pagination>
+            </div>
+        </div>
+        
+   

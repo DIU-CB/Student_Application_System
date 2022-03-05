@@ -1,0 +1,99 @@
+<div class="wrapper" >
+        <form [formGroup]="processForm" fxLayout="column" fxFlex="100" fxLayoutGap="15px">
+            <div fxLayout="row" fxLayoutGap="10px">
+                <mat-form-field style="width: 100%">
+                    <mat-select formControlName="applicationTypeId" placeholder="Application Type">
+                        <mat-option [value]="''">-- Select --</mat-option>
+                        <mat-option *ngFor="let item of applicationQuery.getApplicationTypes | async" [value]="item.id" [title]="item.name">
+                        {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Required!!!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutGap="10px">
+                    <div fxFlex="75">
+                        <mat-form-field style="width: 100%">
+                            <mat-select formControlName="programId" placeholder="Program" (selectionChange)="SetProgramOffices()">
+                                <mat-option [value]="''">-- Select --</mat-option>
+                                <mat-option *ngFor="let item of programList" [value]="item.id" [title]="item.name">
+                                {{item.name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>
+                                Required!!!
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25">
+                        <mat-form-field style="width: 100%">
+                            <mat-select formControlName="campusId" placeholder="Campus" (selectionChange)="SetProgramOffices()">
+                                <mat-option [value]="''">-- Select --</mat-option>
+                                <mat-option *ngFor="let item of campusList" [value]="item.id" [title]="item.name">
+                                {{item.name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>
+                                Required!!!
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <mat-card formArrayName="applicationProcessProtocolSubs">
+                    <mat-card-header>
+                        <mat-card-title>Concerned Employees</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div  fxLayout="row" fxLayoutGap="10px" *ngFor="let item of processForm.get('applicationProcessProtocolSubs')?.controls; let i = index">
+                            <div fxFlex="10" >
+                                <!-- <h2 style="color: gray;">{{item?.value?.orderNo}}</h2> -->
+                                <mat-form-field style="width: 50px;">
+                                    <input type="number" matInput placeholder="Order" [formControl]="item.get('orderNo')">
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="60">
+                                <app-employee-autocomplete
+                                    [priamryId]="item.get('concernedEmployeeId')"
+                                    [priamryKey]=" 'id' "
+                                    placeholder="Application Concern"
+                                    [itemControl]="item.get('concernEmployee')">
+                                </app-employee-autocomplete>
+                            </div>
+                            <div fxFlex="20">
+                                <mat-form-field style="width: 100%">
+                                    <mat-select placeholder="Concern Type" [formControl]="item.get('applicationConcernTypeId')">
+                                        <mat-option *ngFor="let item of applicationConcernTypes" [value]="item.id">
+                                            {{item.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div fxFlex="10">
+                                <button mat-button color="warn" (click)="onItemDeleted(i)">
+                                    <i class="material-icons">close</i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <button mat-raised-button (click)="addItem()">Add</button>
+                        
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-error>
+                    <ul>
+                        <li *ngFor="let err of errorList">{{err}}</li>
+                    </ul>
+                </mat-error>
+
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <!-- <button mat-raised-button color="warn" [disabled]="processForm.invalid" (click)="Submit()">Submit</button> -->
+                    <button mat-raised-button color="warn" (click)="Submit()">Submit</button>
+                </div>
+        </form>
+        <!-- <pre>
+            {{processForm.value|json}}
+        </pre> -->
+</div>

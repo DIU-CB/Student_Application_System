@@ -1,0 +1,42 @@
+import { Component, OnInit, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, SelectControlValueAccessor, FormControl } from '@angular/forms';
+import { CommonDataQueriesService } from 'src/app/core/serviceModule/CommonDataQueries/common-data-queries.service';
+
+
+
+@Component({
+  selector: 'app-status-select',
+  templateUrl: './status-select.component.html',
+  styleUrls: ['./status-select.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => StatusSelectComponent),
+      multi: true
+    }
+  ]
+})
+export class StatusSelectComponent implements ControlValueAccessor{
+  public value:string;
+  constructor(public commonQuery: CommonDataQueriesService) { }
+
+  onChanged: any = () => {}
+  onTouched: any = () => {}
+
+  writeValue(val) {
+    if (val) {
+      this.value = val;
+    }
+  }
+
+  registerOnChange(fn: any){
+    this.onChanged = fn
+  }
+  registerOnTouched(fn: any){
+    this.onTouched = fn
+  }
+  setValue(item: any) {
+      this.onChanged(item.value)
+      this.onTouched();
+  }
+}

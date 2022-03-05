@@ -1,0 +1,48 @@
+
+<div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex="20">
+        <form [formGroup]="searchForm" fxLayout="column" fxLayoutGap="10px">
+
+            <!-- <mat-form-field>
+                <mat-select formControlName="programId" placeholder="Program">
+                    <mat-option *ngFor="let item of programList | async" [value]="item.id">
+                        {{item.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> -->
+            <app-program-select formControlName="programId"></app-program-select>
+
+            <!-- <mat-form-field>
+                <mat-select formControlName="semesterId" placeholder="Semester">
+                    <mat-option *ngFor="let item of semesterList | async" [value]="item.id">
+                        {{item.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> -->
+            <app-semester-select formControlName="semesterId"></app-semester-select>
+
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                <button mat-raised-button color="primary" [disabled]="searchForm.invalid" (click)="Search()">Submit</button>
+                <button mat-raised-button color="warn" (click)="Reset()" >Reset</button>
+            </div>
+            <!-- <pre>
+                {{searchForm.value|json}}
+            </pre> -->
+        </form>
+    </div>
+    <div fxFlex="80" id="print">
+        <h2>Accounts Info. Report</h2>
+        <!-- <pre>
+            {{AccountInfoList | json}}
+        </pre> -->
+        <div *ngIf="!AccountInfoList">Program and semester info. and press the search button.</div>
+        <mat-error *ngIf="AccountInfoList?.length == 0">
+            No Commitments data found, provide Program and semester info. and press the search button.
+        </mat-error>
+        <app-student-commitment-report-table [ReportSource]="AccountInfoList" *ngIf="AccountInfoList?.length > 0"></app-student-commitment-report-table>
+        
+    </div>
+    <button mat-mini-fab class="ui-float-button" (click)="print.printElem('print')">
+        <i class="material-icons">print</i>
+    </button>
+</div>

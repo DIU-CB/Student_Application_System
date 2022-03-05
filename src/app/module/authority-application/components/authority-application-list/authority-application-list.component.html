@@ -1,0 +1,87 @@
+
+<mat-error *ngIf="dataSource?.length == 0">
+    Application Not found
+</mat-error>
+
+
+
+<div fxLayout="column" fxLayoutGap="10px" *ngFor="let item of dataSource; let i = index;">
+    <div style="padding-bottom: 7px">
+        <mat-card>
+            <mat-card-subtitle>Student ID: {{item?.studentId}} | Status: {{item?.applicationStatus?.name}}</mat-card-subtitle>
+            <mat-card-title fxLayout="row">
+                    <div fxFlex="80">{{item?.application?.applicationType?.name}}</div>
+                    <div fxFlex="20">
+                        <button mat-button (click)="PreViewStatus(item)" matTooltip="Show more info. about status">
+                                <mat-spinner *ngIf="item.loaderEnable" [diameter]="20"></mat-spinner>
+                            <i *ngIf="!item.statusOpen" class="material-icons">unfold_more</i>
+                            <i *ngIf="item.statusOpen" class="material-icons">unfold_less</i>
+                            <!-- Preview -->
+                        </button>
+                        <button mat-button [matMenuTriggerFor]="menu">
+                            <i class="material-icons">more_vert</i>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <a mat-menu-item color="accent" routerLink="./../proceed/{{item.applicationId}}">Proceed</a>
+                            <!-- <a *ngIf="!(disablePreciding || item?.applicationStatusId == '6')" mat-menu-item color="accent" routerLink="./../proceed/{{item.applicationId}}">Proceed</a> -->
+                            <!-- <a *ngIf="item?.applicationStatusId == '6' " mat-menu-item color="accent" routerLink="./../proceed/{{item.applicationId}}">Proceed</a> -->
+                            <a  mat-menu-item color="accent" routerLink="./../details/{{item.applicationId}}">Details</a>
+                        </mat-menu>
+                    </div>
+            </mat-card-title>
+            <!-- <circle-loader *ngIf="item.statusList && item.statusList?.length == 0 && item.statusOpen" [diameter]="20"></circle-loader> -->
+            <mat-error *ngIf="(item.statusList && item.statusList?.length == 0) && item.statusOpen">
+                Application Concerns Information(s) not found!!
+            </mat-error>
+            <mat-card-content>
+                <div *ngIf="item.statusList?.length > 0 && item.statusOpen">
+                    <app-application-concern-status-table fxFlex [dataSource]="item.statusList"></app-application-concern-status-table>
+                </div>
+
+                <div *ngIf="item.application?.applicationType?.id == '9999' ">
+                    <button mat-button (click)="PreViewCommitments(item)" title="Get Student Commitments">
+                        <mat-spinner *ngIf="item.loaderEnable" [diameter]="20"></mat-spinner>
+                        View Commitments
+                    </button>
+
+                    <table class="table" *ngIf="item.commitmentList?.length > 0 && item.commitmentOpen">
+                        <thead>
+                            <tr>
+                                <th>Commitment</th>
+                                <th>Semester</th>
+                                <th>Remarks By</th>
+                                <th>Remarks</th>
+                                <th>Current Installment</th>
+                                <th>Dues Up To Last Semester</th>
+                                <th>Dues Up To Mid Or Final/Reg</th>
+                                <th>Paid</th>
+                                <th>Total Payable</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of item.commitmentList; let i = index">
+                                <td>{{item.commitment}}</td>
+                                <td>{{item.semesterName}}</td>
+                                <td>{{item.remarksByEmployee.name}}</td>
+                                <td>{{item.remarks}}</td>
+                                <td>{{item.currentInstallment}}</td>
+                                <td>{{item.duesUpToLastSemester}}</td>
+                                <td>{{item.duesUpToMidOrFinalOrReg}}</td>
+                                <td>{{item.paid}}</td>
+                                <td>{{item.totalPayable}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <pre>
+                        {{item.commitmentList|json}}
+                    </pre> -->
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<!--  <pre>
+    {{dataSource|json}}
+</pre> -->

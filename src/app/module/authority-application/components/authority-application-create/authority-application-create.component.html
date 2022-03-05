@@ -1,0 +1,226 @@
+
+
+<div class="wrapper" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center start" fxLayoutGap="15px" fxLayoutGap.xs="0">
+
+    
+
+    <div fxFlex="70" fxLayout="column" fxLayoutGap="10px">
+
+        <!-- <button (click)="ClickTime()">Check Combine</button> -->
+        <mat-card class="info-card">
+            <mat-card-header>
+                <mat-card-title>{{applicationDetails?.applicationType?.name}}</mat-card-title>
+                <!-- <mat-card-subtitle>Application Type</mat-card-subtitle> -->
+                <mat-card-subtitle>Date: {{applicationDetails?.updatedOn | date: 'dd-MMM-yyyy'}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <!-- <p>
+                    {{applicationDetails?.applicationBody}}
+                </p> -->
+                <textarea matInput
+                [ngModel]="applicationDetails?.applicationBody"
+                readonly
+                 matTextareaAutosize></textarea>
+                <!-- <p>
+                    <strong>Commitment: </strong>{{applicationDetails?.studentCommitment?.commitment}}
+                </p> -->
+            
+                <app-commitment-view [applicationId]="applicationDetails?.id"></app-commitment-view>
+            </mat-card-content>
+            <mat-card-actions>
+                <app-comitment-dialog-view [StudentId]="applicationDetails?.studentId"></app-comitment-dialog-view>
+            </mat-card-actions>
+        </mat-card>
+        <form [formGroup]="applicationForm" fxLayout="column" fxFlex="100" fxLayoutGap="15px">
+
+                <mat-card *ngIf="applicationDetails?.applicationConcerns?.length > 0">
+                    <mat-card-subtitle>Application Concern</mat-card-subtitle>
+                    <mat-card-content>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Comment</th>
+                                    <th>Status</th>
+                                    <!-- <th>Type</th> -->
+                                </tr>
+                            </thead>
+                            <tbody formArrayName="applicationConcerns">
+                                <!-- <tr *ngFor="let item of applicationDetails?.applicationConcerns"> -->
+                                <tr 
+                                    [ngClass]="{'hide': i == 0 }"
+                                    *ngFor="let item of applicationForm.get('applicationConcerns')['controls']; let i = index;" 
+                                    [formGroupName]="i" >
+                                    <td>
+                                        <span *ngIf="item?.value?.id" style="font-weight: 500">{{item?.value?.concernedEmployee?.name}}</span>
+                                        <app-employee-autocomplete-through
+                                            *ngIf="!item?.value?.id"
+                                            [priamryId]="item.get('concernedEmployeeId')"
+                                            [orderNo]="orderNO.get('defaultOrderNo')"
+                                            [applicationStatusId]="applicationStatusId.get('defaultApplicationStatusId')"
+                                            [applicationId]="item.get('applicationId')"
+                                            [priamryKey]=" 'id' "
+                                            placeholder="Application Concern"
+                                            [itemControl]="item.get('concernedEmployee')">
+                                        </app-employee-autocomplete-through>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="tokenService.getUserToken().id !== item.value.concernedEmployeeId">{{item?.value?.remarks}}</span>
+                                        <mat-form-field *ngIf="tokenService.getUserToken().id == item.value.concernedEmployeeId" class="example-full-width">
+                                            <textarea matInput [formControl]="item.get('remarks')" placeholder="Remarks"></textarea>
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <!-- <span *ngIf="tokenService.getUserToken().id !== item.value.concernedEmployeeId">{{item?.value?.applicationStatus?.name}}</span>
+                                        <mat-form-field 
+                                        *ngIf="tokenService.getUserToken().id == item.value.concernedEmployeeId" 
+                                        style="width: 120px">
+                                            <mat-select 
+                                                placeholder="Status" 
+                                                [formControl]="item.get('applicationStatusId')"
+                                                (selectionChange)="ChangeStatus($event.value)"
+                                                >
+                                                <mat-option *ngFor="let item of applicationStatusItems" [value]="item.id">
+                                                    {{item.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
+                                        <mat-form-field 
+                                        style="width: 120px">
+                                            <mat-select 
+                                                [disabled]="tokenService.getUserToken().id !== item.value.concernedEmployeeId || (item.value.applicationStatus.id=='3' && tokenService.getUserToken().id == item.value.concernedEmployeeId)"
+                                                placeholder="Status" 
+                                                [formControl]="item.get('applicationStatusId')"
+                                                (selectionChange)="ChangeStatus($event.value)"
+                                                >
+                                                <mat-option *ngFor="let item of applicationStatusItems" [value]="item.id">
+                                                    {{item.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <button mat-button *ngIf="!item.value.id" (click)="onItemDeleted(i)">
+                                            <i class="material-icons">close</i>
+                                        </button>
+                                    </td>
+                                    <!-- <td>
+                                        <span *ngIf="item?.value?.id">{{item?.value?.applicationConcernType?.name}}</span>
+                                        <mat-form-field *ngIf="!item?.value?.id" style="width: 90px">
+                                            <mat-select placeholder="Concern Type" [formControl]="item.get('applicationConcernTypeId')">
+                                                <mat-option *ngFor="let item of applicationConcernTypes" [value]="item.id">
+                                                    {{item.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-checkbox *ngIf="!item?.value?.id && item?.value?.applicationConcernTypeId == 1" formControlName="canApprove">Can Approve?</mat-checkbox>
+                                    </td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </mat-card-content>
+                    <!-- <pre>
+                        {{applicationForm.value|json}}
+                    </pre> -->
+                    <!-- <mat-card-actions
+                     *ngIf="(applicationForm.value.applicationConcerns | filterConcernEmployee: tokenService.getUserToken())[0]?.applicationConcernTypeId == 1"
+                     fxLayout="row" fxLayoutAlign="end center">
+                        <button mat-button color="primary" (click)="addItem()">
+                            <i class="material-icons">add</i>add
+                        </button>
+                    </mat-card-actions> -->
+                    
+                    <!-- <mat-card-actions *ngIf="IsStatusSelected('2')"
+                        fxLayout="row" fxLayoutAlign="end center">
+                        <button mat-button color="primary" (click)="addItem()">
+                            <i class="material-icons">add</i>add
+                        </button>
+                    </mat-card-actions> -->
+                    <!-- <button (click)="GetApplicationConcernThrough()">Check</button> -->
+                </mat-card>
+
+                <!-- <mat-card *ngIf="applicationDetails?.studentCommitment"> -->
+                <!-- <mat-card>
+                    <form [formGroup]="commitmentForm" fxLayout="column">
+                        
+                        <p>
+                            <strong>Accounts Status:</strong>
+                        </p>
+                        <mat-form-field>
+                            <input matInput formControlName="duesUpToLastSemester" placeholder="Dues Up To Last Semester" type="number">
+                          </mat-form-field>
+                          <mat-form-field>
+                            <input matInput formControlName="currentInstallment" placeholder="Current Installment" type="number">
+                          </mat-form-field>
+                          <mat-form-field>
+                            <input matInput formControlName="totalPayable" placeholder="Total Payable" type="number">
+                          </mat-form-field>
+                          <mat-form-field>
+                            <input matInput formControlName="paid" placeholder="Paid" type="number">
+                          </mat-form-field>
+                          <mat-form-field>
+                            <input matInput formControlName="duesUpToMidOrFinalOrReg" placeholder="Dues Up To Mid Or Final Or Reg" type="number">
+                          </mat-form-field>
+                          <p>
+                                <strong>Year: </strong>{{applicationDetails?.studentCommitment?.year}}
+                                <strong>semesterId: </strong>{{applicationDetails?.studentCommitment?.semesterId}}
+                            </p>
+                            <mat-form-field>
+                                <textarea matInput formControlName="remarks" placeholder="Remarks"></textarea>
+                            </mat-form-field>
+                            <p>
+                                <strong>Remarks: </strong>{{applicationDetails.studentCommitment?.remarks}} this line was commented by munna
+                                <strong>By: </strong>{{applicationDetails?.studentCommitment?.remarksByEmployee?.name}}
+                            </p>
+                    </form>
+                    
+                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                        <button mat-raised-button (click)="SaveCommitment()">Add Remmarks</button>
+                    </div>
+        
+                </mat-card> -->
+        
+        
+                <mat-error *ngFor="let m of errorList">
+                    {{m}}
+                </mat-error>
+                
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <button mat-raised-button color="warn" [disabled]="applicationForm.invalid" *ngIf="toggleFlagForSubmitButton" (click)="Submit()">Save Application</button>
+                    <!-- <button mat-raised-button color="warn" [disabled]="formName.invalid" (click)="Submit()">Submit</button> -->
+                    <!-- <a mat-button color="primary" routerLink="/dashboard/student-application/list">View List</a> -->
+                </div>
+        
+            </form>
+
+            <!-- {{applicationDetails|json}} -->
+            <!-- {{applicationForm|json}} -->
+            
+        
+        
+        
+    </div>
+
+    
+
+
+    <div fxFlex="30" fxLayoutGap="10px" fxLayout="column">
+        <app-student-info-card [dataSource]="applicationDetails?.student"></app-student-info-card>
+        <app-student-result-card [studentId]="applicationDetails?.studentId"></app-student-result-card>
+        <app-student-payment-status-card [studentId]="applicationDetails?.studentId"></app-student-payment-status-card>
+
+        <!-- <app-file-admin-component
+            [studentId]="applicationDetails?.studentId"
+            [applicationId]="applicationForm?.value?.id">
+        </app-file-admin-component> -->
+
+        <app-file-admin-component
+            [uploadedFiles]="uploadedFiles"
+            [uploadedFilesError]="uploadedFilesError">
+        </app-file-admin-component>
+        <!-- <pre>
+            {{applicationForm.value.applicationConcerns | filterConcernEmployee: tokenService.getUserToken() | json }}
+        </pre> -->
+        <!-- <pre>
+            {{ commitmentForm.value | json}}
+        </pre> -->
+    </div>
+</div>

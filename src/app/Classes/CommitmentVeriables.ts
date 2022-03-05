@@ -1,0 +1,12 @@
+export const DATE_ONE = 'dateOne';
+export const DATE_TWO ='dateTwo'
+export const DATE_THREE ='dateThree'
+export const DATE_FOUR ='dateFour'
+export const AMOUNT_ONE ='amountOne'
+export const AMOUNT_TWO ='amountTwo'
+export const AMOUNT_THREE ='amountThree'
+export const AMOUNT_FOUR ='amountFour'
+export const NOTE_ONE ='noteOne'
+export const NOTE_TWO ='noteTwo'
+export const NOTE_THREE ='noteThree'
+export const NOTE_FOUR ='noteFour'

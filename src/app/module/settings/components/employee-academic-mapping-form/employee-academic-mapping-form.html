@@ -1,0 +1,108 @@
+
+
+<!-- <pre>
+    {{mappingList|json}}
+</pre> -->
+
+
+
+<div class="wrapper" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center start" fxLayoutGap="15px" fxLayoutGap.xs="0">
+
+    
+
+    <form [formGroup]="mappingForm" fxFlex="40" fxLayout="column">
+
+        <app-employee-autocomplete-through fxFlex="100"
+            [priamryId]="mappingForm.get('employeeId')"
+            [priamryKey]=" 'id' "
+            placeholder="Employee name..."
+            [itemControl]="mappingForm.get('employee')">
+        </app-employee-autocomplete-through>
+
+        <!-- <mat-form-field>
+            <mat-select formControlName="programId" placeholder="Program">
+                <mat-option>-- Select --</mat-option>
+                <mat-option *ngFor="let item of ProgramList" [value]="item.id">
+                    {{item.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field> -->
+        <app-program-select formControlName="programId"></app-program-select>
+
+        <mat-form-field>
+            <mat-select formControlName="roleId" placeholder="Role">
+                    <mat-option>-- Select --</mat-option>
+                <mat-option *ngFor="let item of RoleList" [value]="item.id">
+                    {{item.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput formControlName="roleName" placeholder="Role Name">
+            <!-- <mat-select formControlName="roleName" placeholder="Role">
+                <mat-option *ngFor="let item of RoleList" [value]="item.id">
+                    {{item.name}}
+                </mat-option>
+            </mat-select> -->
+        </mat-form-field>
+
+        <!-- <mat-form-field>
+            <mat-select formControlName="applicationTypeId" placeholder="Application Type">
+                    <mat-option>-- Select --</mat-option>
+                <mat-option *ngFor="let item of applicationTypeList" [value]="item.id">
+                    {{item.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field> -->
+        <app-application-type-select formControlName="applicationTypeId"></app-application-type-select>
+
+        <mat-form-field>
+            <mat-select formControlName="facultyId" placeholder="Faculty">
+                    <mat-option>-- Select --</mat-option>
+                <mat-option *ngFor="let item of FacultyList" [value]="item.id">
+                    {{item.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select formControlName="shiftId" placeholder="Shift">
+                    <mat-option>-- Select --</mat-option>
+                <mat-option *ngFor="let item of ShiftList" [value]="item.id">
+                    {{item.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- <mat-form-field>
+            <mat-select formControlName="campusId" placeholder="campus">
+                    <mat-option>-- Select --</mat-option>
+                <mat-option *ngFor="let item of CampusList" [value]="item.id">
+                    {{item.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field> -->
+        <app-campus-select formControlName="campusId"></app-campus-select>
+
+        <div>
+            <mat-slide-toggle formControlName="isActive">IsActive</mat-slide-toggle>
+            <mat-slide-toggle formControlName="canDoAnything">Can Do Anything</mat-slide-toggle>
+        </div>
+
+        <mat-error *ngFor="let m of errorList">
+            {{m}}
+        </mat-error>
+        
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <button mat-raised-button color="warn" [disabled]="mappingForm.invalid" (click)="Submit()">Submit</button>
+        </div>
+
+    </form>
+
+    <!-- <pre>
+        {{mappingForm.value|json}}
+    </pre> -->
+
+    
+</div>

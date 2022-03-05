@@ -1,0 +1,190 @@
+
+
+<div class="wrapper" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center start" fxLayoutGap="15px" fxLayoutGap.xs="0">
+
+    
+
+    <div fxFlex="70" fxLayout="column" fxLayoutGap="10px">
+
+        <!-- <pre>
+            {{applicationDetails|json}}
+        </pre> -->
+
+        <mat-card class="info-card">
+            <mat-card-header>
+                <mat-card-title>{{applicationDetails?.applicationType?.name}}</mat-card-title>
+                <mat-card-subtitle>Status: {{applicationDetails?.applicationStatus?.name}}</mat-card-subtitle>
+                <mat-card-subtitle>Semester: {{applicationDetails?.semester?.name}}</mat-card-subtitle>
+                <mat-card-subtitle>Date: {{applicationDetails?.updatedOn | date: 'dd-MMM-yyyy'}}</mat-card-subtitle>
+            </mat-card-header>
+        </mat-card>
+
+        <mat-card class="info-card">
+            <mat-card-content>
+                <textarea matInput
+                [ngModel]="applicationDetails?.applicationBody"
+                (ngModelChange)="applicationDetails.applicationBody = $event"
+                 matTextareaAutosize></textarea>
+                 <!-- <strong>Commitment: </strong>{{applicationDetails?.studentCommitment?.commitment}} -->
+                 <h4>Commitments</h4>
+                 <app-commitment-view [applicationId]="applicationDetails?.id"></app-commitment-view>
+            </mat-card-content>
+            <mat-card-actions>
+                <app-comitment-dialog-view [StudentId]="applicationDetails?.studentId"></app-comitment-dialog-view>
+            </mat-card-actions>
+            
+        </mat-card>
+
+        <form [formGroup]="applicationForm" fxLayout="column" fxFlex="40" fxLayoutGap="15px">
+
+
+        
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>Through</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <!-- <div fxLayout="column" class="example-list" formArrayName="applicationConcerns" fxLayoutGap="10px" cdkDropList (cdkDropListDropped)="drop($event)"> -->
+                    <div fxLayout="column" class="example-list" formArrayName="applicationConcerns" fxLayoutGap="10px">
+    
+                          
+                            <!-- <div cdkDropList class="example-list"> -->
+                                <!-- <div class="example-box" *ngFor="let item of applicationForm.get('applicationConcerns')['controls'] | filterConcern: {applicationConcernTypeId: 2}; let i = index;" cdkDrag [formGroupName]="i"> -->
+                                <div class="example-box" *ngFor="let item of applicationForm.get('applicationConcerns')['controls'] | filterConcern: {applicationConcernTypeId: 2}; let i = index;" [formGroupName]="i">
+                                    <!-- {{i + 1}} -->
+                                        <app-through-single-form [subForm]="item" [statusItems]="applicationStatusItems">
+                                            <!-- <button mat-button color="warn" (click)="onItemDeleted(item, i)">
+                                                <i class="material-icons">close</i>
+                                            </button> -->
+                                        </app-through-single-form>
+                                        
+                                        
+                                        <!-- <mat-form-field style="width: 100%" *ngIf="item.get('isProgramOfficeSelected').value">
+                                            <mat-select placeholder="Program Office" formControlName="programOfficeId">
+                                                <mat-option [value]="''">-- Select --</mat-option>
+                                                <mat-option *ngFor="let item of programOfficeList" [value]="item.id" [title]="item.name">
+                                                {{item.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-checkbox formControlName="isProgramOfficeSelected">Set Program Office?</mat-checkbox> -->
+                                </div>
+                            <!-- </div> -->
+    
+                        <!-- <div *ngFor="let item of applicationForm.get('applicationThroughs')['controls']; let i = index;" [formGroupName]="i">
+                            <app-through-single-form [subForm]="item" [statusItems]="applicationStatusItems">
+                                <button mat-button color="warn" (click)="Delete(item, i)">
+                                    <i class="material-icons">close</i> Remove
+                                </button>
+                            </app-through-single-form>
+            
+                        </div> -->
+                    </div>
+                    <!-- {{hasMentorInForm()}} -->
+                    <div *ngIf="!hasMentor()" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between center"> 
+                        <!-- <mat-checkbox [disabled]="hasMentorInForm()" formControlName="shouldAddMentor">Add mentor/advisor</mat-checkbox> -->
+                        <!-- <mat-checkbox [disabled]="applicationForm.value.applicationConcerns[1].concernedEmployeeId != null" formControlName="shouldAddMentor">Add mentor/advisor</mat-checkbox> -->
+                        <button mat-button [disabled]="applicationForm.value?.applicationConcerns[1]?.concernedEmployeeId != null" (click)="AddMentor()">Add Mentor/Advisor</button>
+                        <!-- <mat-form-field *ngIf="applicationForm?.value?.shouldAddMentor">
+                            <input matInput type="number" formControlName="mentorOrderNo" placeholder="App. Concern's/Mentor order number">
+                        </mat-form-field> -->
+                    </div>
+                </mat-card-content>
+                <!-- <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+    
+                    <button mat-button color="primary" (click)="AddThrough()">
+                        
+                            <i class="material-icons">add</i>Add
+                    </button>
+                    
+                </mat-card-actions> -->
+            </mat-card>
+    
+    
+            <!-- <mat-card *ngIf="applicationDetails?.studentCommitment">
+                <div [formGroup]="commitmentForm" fxLayout="column">
+                    
+                    <p>
+                        <strong>Accounts Status: </strong>
+                    </p>
+                    <mat-form-field>
+                        <input matInput formControlName="duesUpToLastSemester" placeholder="Dues Up To Last Semester" type="number">
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input matInput formControlName="currentInstallment" placeholder="Current Installment" type="number">
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input matInput formControlName="totalPayable" placeholder="Total Payable" type="number">
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input matInput formControlName="remapaidrks" placeholder="paid" type="number"> munna
+                        <input matInput formControlName="paid" placeholder="Paid" type="number">
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input matInput formControlName="duesUpToMidOrFinalOrReg" placeholder="Dues Up To Mid Or Final Or Reg." type="number">
+                      </mat-form-field> -->
+                      <!-- <p>munna
+                            <strong>Year: </strong>{{applicationDetails?.studentCommitment?.year}}
+                            <strong>semesterId: </strong>{{applicationDetails?.studentCommitment?.semesterId}}
+                        </p> -->
+                        <!-- <mat-form-field>
+                            <textarea matInput formControlName="remarks" placeholder="Remarks"></textarea>
+                        </mat-form-field>
+                        <p> -->
+                            <!-- <strong>Remarks: </strong>{{applicationDetails.studentCommitment.remarks}}munna -->
+                            <!-- <strong>By: </strong>{{applicationDetails?.studentCommitment?.remarksByEmployee?.name}}
+                        </p>
+                </div>
+                <pre>munna
+                    {{applicationDetails|json}} -->
+                    <!-- {{applicationForm|json}} -->
+                <!-- </pre>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <button mat-raised-button (click)="SaveCommitment()">Add Remmarks</button>
+                </div>
+    
+            </mat-card> -->
+    
+            <mat-error *ngFor="let m of errorList">
+                {{m}}
+            </mat-error>
+            
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                <button mat-raised-button color="warn" (click)="Submit()">Save Application</button>
+                <!-- <button mat-raised-button color="warn" [disabled]="formName.invalid" (click)="Submit()">Submit</button> -->
+                <!-- <a mat-button color="primary" routerLink="/dashboard/student-application/list">View List</a> -->
+            </div>
+    
+        </form>
+
+        
+        
+        
+        
+    </div>
+
+   
+
+
+    <div fxFlex="30" fxLayoutGap="10px" fxLayout="column">
+        
+        <app-student-info-card [dataSource]="applicationDetails?.student"></app-student-info-card>
+        <app-student-result-card [studentId]="applicationDetails?.studentId"></app-student-result-card>
+        <app-student-payment-status-card [studentId]="applicationDetails?.studentId"></app-student-payment-status-card>
+
+        <app-file-admin-component
+            [uploadedFiles]="uploadedFiles"
+            [uploadedFilesError]="uploadedFilesError">
+        </app-file-admin-component>
+
+
+        <!-- <pre>
+            {{applicationForm.value.applicationConcerns[1] | json}}
+        </pre> -->
+        <!-- <pre>
+            {{applicationDetails|json}}
+        </pre> -->
+    </div>
+</div>
+
+<!-- {{applicationDetails|json}} -->

@@ -1,0 +1,222 @@
+<!-- <global-notify-info></global-notify-info> -->
+
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+  
+  <!-- <global-notify-info></global-notify-info> -->
+
+  <mat-toolbar color="primary" class="example-toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <h1 class="example-app-name">{{setting.shortName}}</h1>
+    <span fxFlex></span>
+    <button mat-button (click)="LogOut()"><i class="material-icons">power_off</i> Logout</button>
+    <button mat-button [matMenuTriggerFor]="groupMenu">
+      <!-- Theme -->
+      <mat-icon class="mat-icon material-icons mat-icon-no-color" role="img" aria-hidden="true">format_color_fill</mat-icon>
+    </button>
+    <mat-menu #groupMenu="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="defaultGroupMenu">Default</button>
+      <button mat-menu-item [matMenuTriggerFor]="redGroupMenu">Red</button>
+      <button mat-menu-item [matMenuTriggerFor]="purpleGroupMenu">Purple</button>
+      <button mat-menu-item (click)="ChangeTheme('teal-theme')">Reset Theme</button>
+    </mat-menu>
+
+    <mat-menu #defaultGroupMenu="matMenu">
+      <button mat-menu-item (click)="ChangeTheme('teal-theme')">Light</button>
+      <button mat-menu-item (click)="ChangeTheme('teal-dark-theme')">Dark</button>
+    </mat-menu>
+
+    <mat-menu #redGroupMenu="matMenu">
+      <button mat-menu-item (click)="ChangeTheme('red-theme')">Light</button>
+      <button mat-menu-item (click)="ChangeTheme('red-dark-theme')">Dark</button>
+    </mat-menu>
+
+    <mat-menu #purpleGroupMenu="matMenu">
+      <button mat-menu-item (click)="ChangeTheme('purple-theme')">Light</button>
+      <button mat-menu-item (click)="ChangeTheme('purple-dark-theme')">Dark</button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <!-- <div class="global-notification">
+    global notice
+  </div> -->
+
+  <!-- <div class="global-warning">
+    global warning
+  </div> -->
+
+  <mat-sidenav-container class="example-sidenav-container"
+                         [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [(opened)]="opened"
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+      
+      <div fxLayout="row" style="height: 100px;">
+
+        <div fxFlex="40" fxLayout="column" fxLayoutAlign="center center">
+          <!-- <img style="height: 100%;"
+            src="http://192.168.10.124/api.diu.sac.cdn/Documents/{{userProfile?.id}}/Photo/{{userProfile?.id}}.jpg" /> -->
+            <div style="width: 50%">
+                <app-user-image [userId]="userProfile?.id"></app-user-image>
+            </div>
+        </div>
+        <div fxFlex="60">
+          <div class="mat-hint"><strong>{{userProfile?.name}}</strong></div>
+          <!-- <div class="mat-hint" *ngFor="let r of userProfile?.roles; let i = index"> <span *ngIf="i != 0">,</span> {{r}}</div> -->
+          <!-- <mat-select placeholder="Roles" [(ngModel)]="userProfile?.roles[0]">
+            <mat-option *ngFor="let role of userProfile?.roles" [value]="role">
+              {{role}}
+            </mat-option>
+          </mat-select> -->
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div>{{userProfile?.roles[0]}} <span *ngIf="userProfile?.roles.length > 1">...</span> </div>
+            <div *ngIf="userProfile?.roles.length > 1">
+              <button mat-button [matMenuTriggerFor]="menu" matTooltip="Info about more user role">
+                <i class="material-icons">expand_more</i>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button *ngFor="let r of userProfile?.roles; let i = index" mat-menu-item>{{r}}</button>
+              </mat-menu>
+            </div>
+          </div>
+        </div>
+        <!-- <pre>
+          {{userProfile|json}}
+        </pre> -->
+      </div>
+
+      <mat-nav-list class="nav-list" style="height: calc(100% - 164px); overflow-y: scroll;">
+
+        <mat-list>
+          <a mat-list-item routerLink="/dashboard/home" routerLinkActive="active-link">Dashboard</a>
+        </mat-list>
+
+
+      <mat-expansion-panel *ngIf="auth.isAuthorized(['Student'])">
+          <mat-expansion-panel-header>
+            <a mat-list-item>
+              <span><i class="material-icons">note_add</i></span>&nbsp;My Application
+            </a>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <a mat-list-item routerLink="../dashboard/student-application/create" routerLinkActive="active-link"> Create New </a>
+          </mat-list>
+          <mat-list>
+            <a mat-list-item routerLink="../dashboard/student-application/list"> List </a>
+          </mat-list>
+      </mat-expansion-panel>
+
+      <!-- <mat-expansion-panel *ngIf="!auth.isAuthorized(['Student'])">
+          <mat-expansion-panel-header>
+            <a mat-list-item>
+              <span><i class="material-icons">note_add</i></span>&nbsp;Process Protocol
+            </a>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <a mat-list-item routerLink="../dashboard/process-protocol/create" routerLinkActive="active-link"> Create New </a>
+          </mat-list>
+          <mat-list>
+            <a mat-list-item routerLink="../dashboard/process-protocol/list"> List </a>
+          </mat-list>
+      </mat-expansion-panel> -->
+
+      <mat-list *ngIf="auth.isAuthorized(['Student'])">
+        <a mat-list-item routerLink="../dashboard/student-application/commitment-list"> Commitment list </a>
+      </mat-list>
+
+      <mat-expansion-panel *ngIf="auth.isAuthorized(['Coordinator', 'Admin'])">
+          <mat-expansion-panel-header>
+            <a mat-list-item>
+              <span><i class="material-icons">note_add</i></span>&nbsp;Application Dispatch
+            </a>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <a mat-list-item routerLink="../dashboard/coordination-application/list"> List </a>
+          </mat-list>
+      </mat-expansion-panel>
+      
+      <mat-expansion-panel *ngIf="auth.isAuthorized(['User'])">
+          <mat-expansion-panel-header>
+            <a mat-list-item>
+              <span><i class="material-icons">note_add</i></span>&nbsp;Application Proceed
+            </a>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <a mat-list-item routerLink="../dashboard/authority-application/list"> List </a>
+          </mat-list>
+          <!-- <mat-list>
+            <a mat-list-item routerLink="../dashboard/authority-application/listpending"> Pending List </a>
+          </mat-list> -->
+      </mat-expansion-panel>
+
+      <mat-expansion-panel *ngIf="auth.isAuthorized(['Coordinator', 'Accounts', 'Exam', 'Registrar', 'Admin'])">
+      <!-- <mat-expansion-panel *ngIf="!auth.isAuthorized(['Student', 'User'])"> -->
+          <mat-expansion-panel-header>
+            <a mat-list-item>
+              <span><i class="material-icons">note_add</i></span>&nbsp;Delivery
+            </a>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <a mat-list-item routerLink="../dashboard/service-delivery/approved-application-list"> App. List </a>
+          </mat-list>
+      </mat-expansion-panel>
+         
+      <mat-expansion-panel *ngIf="auth.isAuthorized(['Coordinator', 'Admin'])">
+          <mat-expansion-panel-header>
+            <a mat-list-item>
+              <span><i class="material-icons">settings</i></span>&nbsp;Settings
+            </a>
+          </mat-expansion-panel-header>
+
+          <mat-list>
+            <a mat-list-item routerLink="../dashboard/process-protocol/create" routerLinkActive="active-link">Process Protocol Create </a>
+          </mat-list>
+          <mat-list>
+            <a mat-list-item routerLink="../dashboard/process-protocol/list">Process Protocol List </a>
+          </mat-list>
+
+          <mat-list>
+            <a mat-list-item routerLink="../dashboard/settings/app-type-create"> Add App. Type </a>
+          </mat-list>
+          <mat-list>
+            <a mat-list-item routerLink="../dashboard/settings/app-type-list"> App. Type List </a>
+          </mat-list>
+          <mat-list *ngIf="auth.isAuthorized(['Admin'])">
+            <a mat-list-item routerLink="../dashboard/settings/employee-map-create"> Employee Mapping </a>
+          </mat-list>
+          <mat-list *ngIf="auth.isAuthorized(['Admin'])">
+            <a mat-list-item routerLink="../dashboard/settings/employee-map-list"> Employee Mapping List </a>
+          </mat-list>
+          <mat-list *ngIf="auth.isAuthorized(['Admin'])">
+            <a mat-list-item routerLink="../dashboard/settings/semester-list"> Semester List </a>
+          </mat-list>
+      </mat-expansion-panel>
+      <mat-list *ngIf="!auth.isAuthorized(['Student'])">
+        <a mat-list-item routerLink="../dashboard/settings/power-of-attorney"> Power Of Attorney </a>
+      </mat-list>
+      <mat-expansion-panel *ngIf="auth.isAuthorized(['Coordinator', 'Accounts', 'Exam', 'Registrar', 'Admin'])">
+        <!-- <mat-expansion-panel> -->
+            <mat-expansion-panel-header>
+              <a mat-list-item>
+                <span><i class="material-icons">note_add</i></span>&nbsp;Reports
+              </a>
+            </mat-expansion-panel-header>
+            <mat-list>
+              <a mat-list-item routerLink="../dashboard/reports/due-collection"> Due Collection </a>
+            </mat-list>
+            <mat-list>
+              <a mat-list-item routerLink="../dashboard/reports/student-commitment">Student Commitment</a>
+            </mat-list>
+            <mat-list>
+              <a mat-list-item routerLink="../dashboard/reports/accounts-info">Accounts Info.</a>
+            </mat-list>
+        </mat-expansion-panel>
+      
+      </mat-nav-list>
+
+      
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

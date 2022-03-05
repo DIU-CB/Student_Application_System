@@ -1,0 +1,50 @@
+
+<div fxLayout="column" fxLayoutGap="20px">
+
+    <div fxLayout="row">
+        <div>
+            <h4>Student Details</h4>
+            <div style="font-weight: 500">Student Name: {{dataSource?.student?.name}}</div>
+            <div>Roll: {{dataSource?.student?.id}}</div>
+            <div>Mobile: {{dataSource?.student?.mobile}}</div>
+            <div>Campus: {{dataSource?.student?.campus?.name}}</div>
+            <div>Program: {{dataSource?.student?.program?.name}}</div>
+            <div>Faculty: {{dataSource?.student?.faculty?.name}}</div>
+            <div>Shift: {{dataSource?.student?.shift?.name}}</div>
+        </div>
+        
+        <!-- <circle-loader *ngIf="!paymentDataSource"></circle-loader>
+        <div *ngIf="paymentDataSource">
+            <h4>Payment Details</h4>
+            <div>Net Balance: {{paymentDataSource?.netBalance}}/-</div>
+            <div>Previous Balance: {{paymentDataSource?.previousBalance}} /-</div>
+            <div>Current Payable: {{paymentDataSource?.currentPayable}} /-</div>
+            <div>Current Paid: {{paymentDataSource?.currentPaid}} /-</div>
+        </div> -->
+    </div>
+    <div>
+        <strong>Subject:</strong> {{dataSource?.applicationType?.name}}
+    </div>
+    <div>
+        <h4>Application Status: {{dataSource?.applicationStatus?.name}}</h4>
+    </div>  
+    
+
+    <div fxLayout="column" fxLayoutAlign="center center">
+        <!-- <h4>Application Body:</h4> -->
+        <p>
+            {{dataSource?.applicationBody}}
+        </p>
+        <!-- <mat-form-field class="example-full-width">
+            <textarea matInput value="{{dataSource?.applicationBody}}" matTextareaAutosize readonly="true"></textarea>
+          </mat-form-field> -->
+
+    </div>
+
+    
+
+    <div *ngIf="dataSource?.applicationConcerns.length > 0">
+        <app-application-concern-status-table fxFlex [dataSource]="dataSource?.applicationConcerns"></app-application-concern-status-table>
+    </div> 
+
+</div>

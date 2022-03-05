@@ -1,0 +1,239 @@
+
+
+<div class="wrapper" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="15px">
+    <form [formGroup]="applicationForm" fxLayout="column" fxFlex="100" fxFlex.gt-xs="50" fxLayoutGap="15px">
+            <div fxLayout="column">
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <mat-form-field style="width: 100%">
+                        <mat-select formControlName="applicationTypeId" placeholder="Application Type">
+                            <mat-option [value]="''">-- Select --</mat-option>
+                            <mat-option *ngFor="let item of applicationTypes" [value]="item.id" [title]="item.name">
+                                {{item.name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Required!!!
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- <app-application-type-select formControlName="applicationTypeId"></app-application-type-select> -->
+                </div>
+                <small *ngIf="applicationType?.commitmentRequired">
+                    You must fill-up the commitments before submit
+                </small>
+            </div>
+            
+        <div fxLayout="row" fxLayoutGap="10px">
+            <div fxFlex="75">
+                <mat-form-field style="width: 100%">
+                    <mat-select formControlName="semesterId" placeholder="Semester">
+                        <mat-option [value]="''">-- Select --</mat-option>
+                        <mat-option *ngFor="let item of semesterList" [value]="item.id" [title]="item.name">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Required!!!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxFlex="25">
+                <mat-form-field style="width: 100%">
+                    <mat-select formControlName="campusId" placeholder="Campus">
+                        <mat-option [value]="''">-- Select --</mat-option>
+                        <mat-option *ngFor="let item of campusList" [value]="item.id" [title]="item.name">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>
+                        Required!!!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- <mat-error>
+            {{applicationDesctiption}}
+        </mat-error> -->
+
+        <!-- <textarea matInput
+                [ngModel]="applicationDesctiption"
+                placeholder="Application Desctiption"
+                 matTextareaAutosize></textarea> -->
+                 <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Instruction(s)</mat-label>
+                    <textarea matInput
+                        readonly="readonly"
+                        formControlName="applicationDesctiption"
+                        matTextareaAutosize></textarea>
+                 </mat-form-field>
+
+        <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Application Body</mat-label>
+            <textarea formControlName="applicationBody" matInput matTextareaAutosize cdkAutosizeMinRows="15"></textarea>
+            <mat-error>
+                Required!!!
+            </mat-error>
+        </mat-form-field>
+
+        <!-- <ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor> -->
+
+
+            <!-- <mat-form-field appearance="outline" class="example-full-width" formGroupName="studentCommitment">
+                <textarea formControlName="commitment" matInput placeholder="Your Commitment..." matTextareaAutosize cdkAutosizeMinRows="3"></textarea>
+                <mat-error>
+                    Required!!!
+                </mat-error>
+            </mat-form-field> -->
+
+        <!-- <table class="table" *ngIf="applicationType?.commitmentRequired"> -->
+        <div *ngIf="applicationType?.commitmentRequired">
+            <h3>Commitments</h3>
+            <table class="table" formGroupName="studentCommitment">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>amount</th>
+                        <th>note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <mat-form-field>
+                                <input matInput formControlName="dateOne" [matDatepicker]="pickerOne" placeholder="Choose a date">
+                                <mat-datepicker-toggle matSuffix [for]="pickerOne"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerOne></mat-datepicker>
+                                <mat-error>
+                                    Required!!!
+                                </mat-error>
+                            </mat-form-field>                          
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <input matInput formControlName="amountOne" type="number" placeholder="Amount">
+                                <mat-error>
+                                    Required!!!
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <input matInput formControlName="noteOne" placeholder="Note">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field>
+                                <input matInput formControlName="dateTwo" [matDatepicker]="pickerTwo" placeholder="Choose a date">
+                                <mat-datepicker-toggle matSuffix [for]="pickerTwo"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerTwo></mat-datepicker>
+                            </mat-form-field>                          
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <input matInput *ngIf="'amountTwo'"  formControlName="amountTwo" type="number" placeholder="Amount">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <input matInput *ngIf="'noteTwo'"  formControlName="noteTwo" placeholder="Note">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field>
+                                <input matInput formControlName="dateThree" [matDatepicker]="pickerThree" placeholder="Choose a date">
+                                <mat-datepicker-toggle matSuffix [for]="pickerThree"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerThree></mat-datepicker>
+                            </mat-form-field>                          
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <input matInput formControlName="amountThree" type="number" placeholder="Amount">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <input matInput formControlName="noteThree" placeholder="Note">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field>
+                                <input matInput formControlName="dateFour" [matDatepicker]="pickerFour" placeholder="Choose a date">
+                                <mat-datepicker-toggle matSuffix [for]="pickerFour"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerFour></mat-datepicker>
+                            </mat-form-field>                          
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <input matInput formControlName="amountFour" type="number" placeholder="Amount">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field>
+                                <input matInput formControlName="noteFour" placeholder="Note">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div formArrayName="files" fxLayout="column" fxLayoutGap="5px">
+            
+            <mat-card
+            *ngFor="let item of applicationForm.get('files')?.controls; let i = index;" [formGroupName]="i"
+            >
+                <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxFlex="50">
+                            <img style="width: 100px;" src="{{applicationForm?.value?.files[i]}}"/>
+                        </div>
+                        <div fxFlex="50" fxLayout="column" fxLayoutAlign="start space-between">
+                            <small>Image file size should be 500kB or less</small>
+                            <input type="file" (change)="SelectFile($event, i)"/>
+                        </div>
+                        
+                </mat-card-content>
+                <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+                    <button mat-button color="accent" type="button" md-button (click)="onItemDeleted(i)">
+                        <i class="material-icons"> close </i>    
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+            <div fxLayout="row" fxLayoutAlign="end center">
+                <button mat-raised-button color="primary" type="button" md-button (click)="addItem()">
+                    <i class="material-icons"> add_photo_alternate </i> Add Image
+                </button>
+            </div>
+        </div>
+
+        <mat-error *ngFor="let msg of errorMsg;">{{msg}}</mat-error>
+
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <!-- <button mat-raised-button color="warn" [disabled]="applicationForm.invalid" (click)="Submit()">Submit</button> -->
+            <button mat-raised-button color="warn" [disabled]="applicationForm.invalid || !applicationType?.active" (click)="Submit()">Submit</button>
+        </div>
+
+    </form>
+
+    <div fxLayout="50" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+        
+        <app-file-student-component
+            [uploadedFiles]="uploadedFiles"
+            [uploadedFilesError]="uploadedFilesError"
+            (onDelete)="DeleteDialog($event)"
+        >
+        </app-file-student-component>
+
+            
+    </div>
+
+    <!-- <pre>
+        {{applicationForm.value | json}}
+    </pre> -->
+
+</div>

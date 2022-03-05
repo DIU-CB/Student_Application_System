@@ -1,0 +1,52 @@
+
+
+<div class="wrapper" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center start" fxLayoutGap="15px" fxLayoutGap.xs="0">
+
+    
+
+    <form [formGroup]="applicationTypeForm" fxLayout="column" fxFlex="40" fxLayoutGap="15px">
+
+        <mat-form-field class="example-full-width">
+            <input matInput formControlName="name" placeholder="Name of application type" required="true">
+            <mat-error>
+                Required!!!
+            </mat-error>
+        </mat-form-field>
+    
+        <mat-form-field class="example-full-width">
+            <!-- <input matInput formControlName="description" placeholder="Description"> -->
+            <textarea matInput formControlName="description" placeholder="Description" matTextareaAutosize></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <textarea matInput formControlName="dummyApllicationBody" placeholder="Apllication body..." matTextareaAutosize></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <input matInput formControlName="applicationToAddressing" placeholder="Application To Addressing" required="true">
+            <mat-error>
+                Required!!!
+            </mat-error>
+        </mat-form-field>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-slide-toggle formControlName="active">Active?</mat-slide-toggle>
+            <mat-slide-toggle formControlName="commitmentRequired">Commitment Required?</mat-slide-toggle>
+        </div>
+
+        <mat-error *ngFor="let m of errorList">
+            {{m}}
+        </mat-error>
+        
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <button mat-raised-button color="warn" [disabled]="applicationTypeForm.invalid" (click)="Submit()">Submit</button>
+        </div>
+
+    </form>
+
+    <!-- <pre>
+        {{applicationTypeForm.value|json}}
+    </pre> -->
+
+    
+</div>

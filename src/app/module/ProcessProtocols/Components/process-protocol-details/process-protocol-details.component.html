@@ -1,0 +1,35 @@
+<table class="table">
+    <tr>
+        <th style="text-align: left;">Application Type</th>
+        <td>{{detailsData.applicationType?.name}}</td>
+    </tr>
+    <tr>
+        <th style="text-align: left;">Campus</th>
+        <td>{{detailsData.campus?.name}}</td>
+    </tr>
+    <tr>
+        <th style="text-align: left;">Program</th>
+        <td>{{detailsData.program?.name}}</td>
+    </tr>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>orderNo</th>
+            <th>Concern</th>
+            <th>Concern Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of detailsData.applicationProcessProtocolSubs; let i = index;">
+            <td>{{item.orderNo}}</td>
+            <td>{{item.concernEmployee?.name}}</td>
+            <td>{{item.applicationConcernType?.name}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- <pre>
+    {{detailsData|json}}
+</pre> -->

@@ -1,0 +1,105 @@
+
+<div fxLayout="column" fxLayoutGap="20px" style="padding: 10px">
+
+    <div fxLayout="row" fxLayoutAlign="space-around center">
+        <div>
+            <h4>Student Details</h4>
+            <div style="font-weight: 500">Student Name: {{dataSource?.student?.name}}</div>
+            <div>Roll: {{dataSource?.student?.id}}</div>
+            <div>Mobile: {{dataSource?.student?.mobile}}</div>
+            <div>Campus: {{dataSource?.student?.campus?.name}}</div>
+            <div>Program: {{dataSource?.student?.program?.name}}</div>
+            <div>Faculty: {{dataSource?.student?.faculty?.name}}</div>
+            <div>Shift: {{dataSource?.student?.shift?.name}}</div>
+        </div>
+        
+        <circle-loader *ngIf="!paymentDataSource"></circle-loader>
+        <div *ngIf="paymentDataSource">
+            <h4>Payment Details</h4>
+            <div>Net Balance: {{paymentDataSource?.netBalance}}/-</div>
+            <div>Previous Balance: {{paymentDataSource?.previousBalance}} /-</div>
+            <div>Current Payable: {{paymentDataSource?.currentPayable}} /-</div>
+            <div>Current Paid: {{paymentDataSource?.currentPaid}} /-</div>
+        </div>
+        <div *ngIf="dataSource?.studentCommitment">
+            <h4>Accounts Status</h4>
+            <div>Dues Up To Last Semester: {{dataSource?.studentCommitment?.duesUpToLastSemester}}/-</div>
+            <div>Current Installment: {{dataSource?.studentCommitment?.currentInstallment}}/-</div>
+            <div>Total Payable: {{dataSource?.studentCommitment?.totalPayable}}/-</div>
+            <div>Paid: {{dataSource?.studentCommitment?.paid}}/-</div>
+            <div>Dues Up To Mid/Final/Reg: {{dataSource?.studentCommitment?.duesUpToMidOrFinalOrReg}}/-</div>
+        </div>
+    </div>
+
+    <div>
+        <h4>Application Status: {{dataSource?.applicationStatus?.name}}</h4>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="10px">
+        <!-- <div fxFlex>
+            <h4>To</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of FilterApplicationConcern(dataSource?.applicationConcerns, 1)">
+                        <td>{{item?.concernedEmployee?.name}}</td>
+                        <td>{{item?.applicationStatus?.name}}</td>
+                        <td>{{item?.remarks}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> -->
+        
+        <div fxFlex>
+            <h4>Through</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <tr *ngFor="let item of dataSource?.applicationThroughs"> -->
+                    <tr *ngFor="let item of FilterApplicationConcern(dataSource?.applicationConcerns, 2)">
+                        <td>{{item?.concernedEmployee?.name}}</td>
+                        <td>{{item?.applicationStatus?.name}}</td>
+                        <td>{{item?.remarks}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div>
+        <h4>Application Body:</h4>
+        <!-- <p>
+            {{dataSource?.applicationBody}}
+        </p> -->
+        <mat-form-field style="width: 100%">
+            <textarea matInput
+                [ngModel]="dataSource?.applicationBody"
+                readonly
+                matTextareaAutosize></textarea>
+        </mat-form-field>
+        <p>
+            <strong>Commitment: </strong>{{dataSource?.studentCommitment?.commitment}}
+        </p>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <button mat-raised-button color="warn" (click)="serviceDeliveryConf.Deliver(dataSource?.id, dataSource?.rowVersion)">Deliver</button>
+    </div>
+
+    <!-- <pre>
+        {{dataSource|json}}
+    </pre> -->
+
+</div>
