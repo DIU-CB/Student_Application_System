@@ -51,6 +51,7 @@ import { UnsubscribeOnDestroyAdapter } from "src/app/shared/service/unsubscribe-
                     .subscribe((resp)=>{
                         let res = JSON.parse(resp.jsonData);
                         this.data = res;
+                        console.log(this.data);
                     })
                 )
             })

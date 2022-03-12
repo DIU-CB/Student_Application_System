@@ -5,9 +5,9 @@
             <div fxLayout="column">
                 <div fxLayout="row" fxLayoutGap="10px">
                     <mat-form-field style="width: 100%">
-                        <mat-select formControlName="applicationTypeId" placeholder="Application Type">
+                        <mat-select formControlName="applicationTypeId" placeholder="Application Type" >
                             <mat-option [value]="''">-- Select --</mat-option>
-                            <mat-option *ngFor="let item of applicationTypes" [value]="item.id" [title]="item.name">
+                            <mat-option *ngFor="let item of applicationTypes" [value]="item.id" [title]="item.name" (click)="onApplicationType()">
                                 {{item.name}}
                             </mat-option>
                         </mat-select>
@@ -21,6 +21,7 @@
                     You must fill-up the commitments before submit
                 </small>
             </div>
+            <label style="color: red;">{{messageForApplicationFee}}</label>
             
         <div fxLayout="row" fxLayoutGap="10px">
             <div fxFlex="75">

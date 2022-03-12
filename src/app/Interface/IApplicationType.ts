@@ -5,4 +5,6 @@ export interface IApplicationType{
     name: string;
     active: boolean;
     commitmentRequired: boolean;
+    applicationFee?:boolean;
+
 }

@@ -65,6 +65,8 @@ export class StudentApplicationFormComponent extends UnsubscribeOnDestroyAdapter
             applicationDesctiption: new FormControl(),
             campusId: new FormControl(""),
             semesterId: new FormControl("", Validators.required),
+            paid: new FormControl(null),
+
             files: this.fb.array([
                 //this.filesGroup()
             ]),
@@ -174,6 +176,30 @@ export class StudentApplicationFormComponent extends UnsubscribeOnDestroyAdapter
         )
 
     }
+
+    messageForApplicationFee="";
+
+    onApplicationType(){
+        //console.log(this.applicationForm.get('applicationTypeId').value);
+        this.messageForApplicationFee="";
+        let applicationFee=this.applicationTypes.find(c=>c.id==this.applicationForm.get('applicationTypeId').value).applicationFee;
+        if(applicationFee!=null){
+            //console.log(this.applicationTypes.find(c=>c.id==this.applicationForm.get('applicationTypeId').value).applicationFee);
+            
+            this.applicationForm.patchValue({
+                paid:false
+            });
+            //console.log( this.applicationForm.value);
+            this.messageForApplicationFee=`This Application include fee of ${applicationFee} taka`;
+
+        }else{
+            //console.log( this.applicationForm.value);
+            this.applicationForm.patchValue({
+                paid:null
+            });
+        }
+    }
+
 
     UpdateValidator(input:AbstractControl){
         if (input) {

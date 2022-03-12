@@ -15,6 +15,8 @@ import { StudentApplicationEditComponent } from './pages/edit';
 import { PopNotificationService } from 'src/app/shared/service/pop.notification';
 import { StudentApplicationListPageComponent } from './pages/list';
 import { StudentApplicationPrintComponent } from './pages/print';
+import { StudentApplicationPaymentComponent } from './components/student-application-payment/student-application-payment.component';
+
 import { StudentCommitmentListComponent } from './components/student-commitment-list/student-commitment-list.compont';
 import { StudentCommitmentListPageComponent } from './pages/commitmentlist';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -28,6 +30,7 @@ const _sharedComponent = [
   , StudentApplicationPrintComponent
   , StudentCommitmentListPageComponent
   , StudentCommitmentListComponent
+  ,StudentApplicationPaymentComponent
 ]
 
 const _sharedMaterialModule = [

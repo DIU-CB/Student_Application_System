@@ -5,6 +5,8 @@ import { StudentApplicationCreateComponent } from './pages/create';
 import { StudentApplicationEditComponent } from './pages/edit';
 import { StudentApplicationListPageComponent } from './pages/list';
 import { StudentApplicationPrintComponent } from './pages/print';
+import { StudentApplicationPaymentComponent } from './components/student-application-payment/student-application-payment.component';
+
 import { StudentCommitmentListPageComponent } from './pages/commitmentlist';
 
 const routes: Routes = [
@@ -12,6 +14,7 @@ const routes: Routes = [
     {path: 'create', component: StudentApplicationCreateComponent},
     {path: 'edit/:id', component: StudentApplicationEditComponent},
     {path: 'print/:id', component: StudentApplicationPrintComponent},
+    {path: 'payment/:id/:amount', component: StudentApplicationPaymentComponent},
     {path: 'list', component: StudentApplicationListPageComponent},
     {path: 'commitment-list', component: StudentCommitmentListPageComponent}
   ]}
