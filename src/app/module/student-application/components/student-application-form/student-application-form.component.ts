@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
 import { FormGroup, FormBuilder, FormArray, FormControl, Validators, AbstractControl } from "@angular/forms";
 import { ApplicationTypeQueryService } from "src/app/core/serviceModule/ApplicationType/application-type-queries.query";
 import { StudentApplicationWriteService } from "src/app/core/serviceModule/StudentApplication/student.application.write";
@@ -12,6 +12,7 @@ import { UnsubscribeOnDestroyAdapter } from "src/app/shared/service/unsubscribe-
 import { IApplicationType } from "src/app/Interface/IApplicationType";
 import { ICampus } from "src/app/Interface/ICampus";
 import { DATE_ONE, DATE_TWO, DATE_THREE, DATE_FOUR, AMOUNT_ONE, AMOUNT_TWO, AMOUNT_THREE, AMOUNT_FOUR, NOTE_ONE, NOTE_TWO, NOTE_THREE, NOTE_FOUR } from "src/app/Classes/CommitmentVeriables";
+import { ActivatedRoute, Router } from "@angular/router";
 // import { ComplexForm } from "src/app/shared/classes/complex.form";
 // import  * as ClassicEditor from "../../../../../../node_modules/@ckeditor/ckeditor5-angular";
 
@@ -45,6 +46,9 @@ export class StudentApplicationFormComponent extends UnsubscribeOnDestroyAdapter
     imageData:String;
     uploadedFiles:any;
     uploadedFilesError:any;
+
+    @Output() routeBackToParent=new EventEmitter();
+
     constructor(
         private fb: FormBuilder
         , private applicationQuery: ApplicationTypeQueryService
@@ -54,6 +58,8 @@ export class StudentApplicationFormComponent extends UnsubscribeOnDestroyAdapter
         , public commonDataService: CommonDataQueriesService
         , public semesterService: SemesterQueryService
         , public dialog: MatDialog
+        ,public router:Router
+        ,public ActiveRouter:ActivatedRoute
         ) { super() }
   
     ngOnInit() {
@@ -190,7 +196,7 @@ export class StudentApplicationFormComponent extends UnsubscribeOnDestroyAdapter
                 paid:false
             });
             //console.log( this.applicationForm.value);
-            this.messageForApplicationFee=`This Application include fee of ${applicationFee} taka`;
+            this.messageForApplicationFee=`You  must pay ${applicationFee} taka to complete the application process`;
 
         }else{
             //console.log( this.applicationForm.value);
@@ -294,12 +300,26 @@ export class StudentApplicationFormComponent extends UnsubscribeOnDestroyAdapter
             this.studentApplicationService.SaveChanges(this.applicationForm.value, this.applicationForm.value.id)
             .subscribe((res)=>{
                 // debugger
-                this.notify.Success();
+                //this.notify.Success();
+                //this.router.navigate[('dashboard/student-application/list')];
+                this.routeBackToParent.emit();
+                
+                
+
             }, (err)=>{
                 // debugger
                 this.errorMsg = err.error.messages;
-                //this.notify.Error();
-                this.notify.Success();
+                if(this.errorMsg==null){
+                    this.notify.Success();
+                    
+                    this.routeBackToParent.emit();
+                }
+                else{
+                    console.log(err)
+                    this.notify.Error();
+                }
+                
+                
             })
         )
     }

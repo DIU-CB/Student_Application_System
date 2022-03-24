@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-student-application-create',
@@ -15,18 +16,23 @@ import { Component, OnInit } from "@angular/core";
                 </mat-toolbar-row>
             </mat-toolbar>
 
-            <student-application-form></student-application-form>
+            <student-application-form (routeBackToParent)="GoToList()"></student-application-form>
             <a mat-mini-fab routerLink="/dashboard/student-application/list" class="ui-float-button">
                 <mat-icon aria-label="Example icon-button with a heart icon">list</mat-icon>
             </a>
+           
         </div>
     `
   })
   export class StudentApplicationCreateComponent implements OnInit {
   
-    constructor() { }
+    constructor(public router:Router) { }
   
     ngOnInit() {
+    }
+
+    GoToList(){
+        this.router.navigate(['/dashboard/student-application/list']);
     }
   
   }

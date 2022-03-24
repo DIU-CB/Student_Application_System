@@ -82,8 +82,8 @@ export class StudentApplicationPaymentComponent extends UnsubscribeOnDestroyAdap
       cus_country: "",
       cus_phone: this.data.student.mobile,
       response_type: "json",
-      success: "http://localhost:22541/api/PaymentPush",
-      redirect: "http://192.168.10.227:4202/dashboard/",
+      success: "http://localhost:59968/api/PaymentPush",
+      redirect: "http://192.168.10.227:4202/dashboard/student-application/list",
       reff_id: this.data.studentId + "." + this.data.id + "." + Date.now()
     }
     //console.log(this.PaymentBody);

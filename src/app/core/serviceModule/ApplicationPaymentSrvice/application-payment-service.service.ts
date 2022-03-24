@@ -11,7 +11,7 @@ export class ApplicationPaymentServiceService {
   RequestPayment(PaymentBody){
     console.log(PaymentBody);
     //const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    return this.http.post('http://localhost:22541/PaymentFromFront',PaymentBody);
+    return this.http.post('http://localhost:59968/PaymentFromFront',PaymentBody);
 
     
   }

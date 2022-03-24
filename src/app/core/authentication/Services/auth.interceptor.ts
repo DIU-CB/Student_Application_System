@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  
   constructor(private routes: Router){}
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     //let tokenService = new TokenService();
@@ -23,13 +24,29 @@ export class AuthInterceptor implements HttpInterceptor {
       tk = "";
     }
 
-    req = req.clone({
-      setHeaders: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'Accept': 'application/json',
-        'Authorization': tk
-      },
-    });
+    
+    if(req.headers.get('FormType')!='multipart/form-data'){
+      req = req.clone({
+        setHeaders: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Accept': 'application/json',
+          'Authorization': tk
+        },
+      });
+    }else{
+      
+      req = req.clone({
+        
+        setHeaders: {
+           
+          'Accept': 'application/json',
+          'Authorization': tk
+        },
+      });
+      
+    }
+   
+    
 
     return next.handle(req)
     // .do(
