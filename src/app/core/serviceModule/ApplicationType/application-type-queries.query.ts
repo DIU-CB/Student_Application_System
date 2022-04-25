@@ -23,6 +23,8 @@ export class ApplicationTypeQueryService implements IQueryService {
     return this.httpClient .get(this.apiUrl + this.controller + '/' + _id )
     //return this.httpClient.get(`${this.cacheUrl}Caches`, {params: {Key: _id, Prefix: 'student-application' }});
   }
-
+  GetByApplicationTypeByStudentd(){
+    return this.httpClient .get(this.apiUrl + this.controller+'/GetAllApplicationTypeByStudentId')
+  }
 
 }

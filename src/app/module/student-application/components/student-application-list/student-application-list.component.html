@@ -9,6 +9,9 @@
             <th>SL. No.</th>
             <th>App. Type</th>
             <th>Status</th>
+            <th>Pyment Status</th>
+            
+
             <th>&nbsp;</th>
         </tr>
     </thead>
@@ -21,14 +24,31 @@
                 <app-status [item]=item?.applicationStatus></app-status>
             </td>
             <td>
+                <h3 *ngIf="item.paid == false">Not Paid (50tk)</h3>
+                <h3 *ngIf="item.paid == true">Paid (50tk)</h3>
+                <h3 *ngIf="item.paid == null">Payment Not Needed</h3>
+
+
+            </td>
+            
+            <td>
                 <a  *ngIf="item?.applicationStatusId == '1' " mat-button color="primary" routerLink="/dashboard/student-application/edit/{{item.id}}">Edit</a>
                 <!-- <button *ngIf="item?.applicationStatusId == '2' " mat-button color="primary" routerLink="/dashboard/student-application/print/{{item.id}}">Print</button> -->
                 <button mat-button color="primary" routerLink="/dashboard/student-application/print/{{item.id}}">Print</button>
-                <button *ngIf="item?.applicationStatusId == '1' " mat-button color="warn" (click)="DeleteDialog(item)">Delete</button>
+                <button *ngIf="item?.applicationStatusId == '1' && item.paid == false" mat-button color="warn" (click)="DeleteDialog(item)">Delete</button>
+                <button *ngIf="item?.applicationStatusId == '1' &&  item.paid == null" mat-button color="warn" (click)="DeleteDialog(item)">Delete</button>
+
                 <button *ngIf="item.paid == false" mat-button color="warn" routerLink="/dashboard/student-application/payment/{{item.id}}/{{item.applicationType.applicationFee}}">Payment</button>
-                <button  mat-button color="warn" (click)="DownloadCertificate(item)">Download</button>
+                <button *ngIf="item.fileUploaded == true && CheckDownloadButtonValidity(item)" mat-button color="warn" (click)="DownloadCertificate(item)">Download</button>
 
                 
+            </td>
+            <td *ngIf="item.fileUploaded != null">
+                <h3 *ngIf="item.fileUploaded == false">Document is Processing</h3>
+                <h3 *ngIf="item.fileUploaded == true">Document is Ready and Last Date of Download: {{item?.fileDownloadDate|date: 'dd/MM/yyyy'}}</h3>
+               
+
+
             </td>
         </tr>
     </tbody>

@@ -15,20 +15,23 @@ import { UnsubscribeOnDestroyAdapter } from "src/app/shared/service/unsubscribe-
 import { Observable } from "rxjs/Rx";
 import { IApplicationType } from "src/app/Interface/IApplicationType";
 import { combineLatest, forkJoin } from 'rxjs';
-interface Retrive{
-    propa:string;
+import { CertificateService } from "src/app/core/serviceModule/CertificateService/certificate.service";
+import { ApplicationPreceedingsQueryService } from "src/app/core/serviceModule/ApplicationPreceedings/ApplicationPreceedings.query.service";
+import { DateFormatService } from "src/app/shared/service/date-format.service";
+interface Retrive {
+    propa: string;
 }
 
-interface Create{
-    propb:string;
+interface Create {
+    propb: string;
 }
 
-interface Crude extends Retrive, Create{
-    propc:string;
+interface Crude extends Retrive, Create {
+    propc: string;
 }
 
 @Component({
-    
+
     selector: 'app-authority-application-proceed-form',
     styles: [`.hide{ display: none }`],
     templateUrl: './authority-application-create.component.html',
@@ -44,9 +47,9 @@ interface Crude extends Retrive, Create{
     ]
 })
 
-export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestroyAdapter implements OnInit{
-    applicationForm:FormGroup;
-    commitmentForm:FormGroup;
+export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestroyAdapter implements OnInit {
+    applicationForm: FormGroup;
+    commitmentForm: FormGroup;
     applicationDetails;
     studentDueAndCGPADetails;
     applicationStatusItems;
@@ -54,15 +57,16 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
     uploadedFiles;
     uploadedFilesError;
 
-    orderNO:FormGroup;
-    applicationStatusId:FormGroup;
-  
+    orderNO: FormGroup;
+    applicationStatusId: FormGroup;
+    applicationDetailsForUplodFile;
+    FileDownloadDate: Date;
 
-    isAdded:number = 0;
+    isAdded: number = 0;
 
     applicationConcernTypes = [
-        {id: 1, name: 'To'}
-        , {id: 2, name: 'Through'}
+        { id: 1, name: 'To' }
+        , { id: 2, name: 'Through' }
     ]
 
     constructor(private fb: FormBuilder
@@ -75,30 +79,35 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
         , private studentApplicationQueryService: StudentApplicationQueryService
         , public tokenService: TokenService
         , private commitmentService: StudentCommitmentsWriteService
-        ){ super(); }
+        , private certificateService: CertificateService
+        , private applicationPreceedingsQueryService: ApplicationPreceedingsQueryService
+        , private dateFormatService: DateFormatService
+    ) { super(); }
 
-    ngOnInit(){
-        
+    ngOnInit() {
 
-        this.orderNO=this.fb.group({
-            defaultOrderNo:new FormControl(1)
+
+        this.orderNO = this.fb.group({
+            defaultOrderNo: new FormControl(1)
         });
 
-        this.applicationStatusId=this.fb.group({
-            defaultApplicationStatusId:new FormControl(1)
+        this.applicationStatusId = this.fb.group({
+            defaultApplicationStatusId: new FormControl(1)
         });
 
-       
- 
+
+
+
+
 
         this.applicationForm = this.fb.group({
             rowVersion: new FormControl(),
             id: new FormControl(''),
             canApprove: new FormControl(false),
-            applicationStatusId:  new FormControl(''),
-            remarks:  new FormControl(''),
+            applicationStatusId: new FormControl(''),
+            remarks: new FormControl(''),
             employeeId: new FormControl(''),
-            forwardToEmployeeId:  new FormControl(''),
+            forwardToEmployeeId: new FormControl(''),
             forwardToEmployee: new FormControl(''),
             applicationBody: new FormControl(),
             applicationConcerns: this.fb.array([
@@ -128,37 +137,46 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
 
         this.subscribe$.add(
             this.commondataQuery.GetStatus()
-            .subscribe((res)=>{
-                this.applicationStatusItems = res;
-            })
+                .subscribe((res) => {
+                    this.applicationStatusItems = res;
+                })
         )
 
-        
+
 
         this.subscribe$.add(
-            this.route.params.subscribe((params)=>{
+            this.route.params.subscribe((params) => {
                 this.subscribe$.add(
                     this.applicationQyeryService.GetById(params.id)
-                    .map((response)=>{
-                        let res = JSON.parse(response.jsonData)
-                        res.applicationConcerns.forEach(() => {
-                            this.addItem();
-                        });
-                        return res;
-                    })
-                    .subscribe((res)=>{
-                        
-                        this.applicationDetails = res;
-    
-                        this.subscribe$.add(
-                            // this.StudentDueAndCgpaSummariesService.GetById(res.studentId)
-                            this.StudentDueAndCgpaSummariesService.GetCgpa(res.studentId)
-                            .subscribe((res)=>{
-                                this.studentDueAndCGPADetails = res;
-                            })
-                        )
-    
-                            if(res.studentCommitment){
+                        .map((response) => {
+                            let res = JSON.parse(response.jsonData)
+                            res.applicationConcerns.forEach(() => {
+                                this.addItem();
+                            });
+                            return res;
+                        })
+                        .subscribe((res) => {
+
+                            this.applicationDetails = res;
+
+                            this.subscribe$.add(
+                                this.applicationPreceedingsQueryService.GetApplicationByApplicationIdAndStudentId(res.id, res.studentId)
+                                    .subscribe((res) => {
+
+                                        this.applicationDetailsForUplodFile = res;
+                                        if(this.applicationDetailsForUplodFile.fileDownloadDate!=null)
+                                        this.FileDownloadDate=new Date(this.applicationDetailsForUplodFile.fileDownloadDate);
+                                    })
+                            )
+                            this.subscribe$.add(
+                                // this.StudentDueAndCgpaSummariesService.GetById(res.studentId)
+                                this.StudentDueAndCgpaSummariesService.GetCgpa(res.studentId)
+                                    .subscribe((res) => {
+                                        this.studentDueAndCGPADetails = res;
+                                    })
+                            )
+
+                            if (res.studentCommitment) {
                                 this.commitmentForm.patchValue(res.studentCommitment)
                             } else {
                                 this.commitmentForm.patchValue({
@@ -178,69 +196,69 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
                                     remarksByEmployee: ""
                                 })
                             }
-                            
-                            
-                            
-    
-                        this.subscribe$.add(
-                            this.studentApplicationQueryService.GetFiles(res.id, res.studentId)
-                                .subscribe((fileres)=>{
-                                    this.uploadedFiles = fileres;
-                                }, (err)=>{
-                                    this.uploadedFilesError = err.error.messages;
-                                })
-                        )
-    
-                        
-                        
-                        res['employeeId'] = this.tokenService.getUserToken().id;
-                        
-                        this.applicationForm.patchValue(
-                            res
-                        )
-                    })
+
+
+
+
+                            this.subscribe$.add(
+                                this.studentApplicationQueryService.GetFiles(res.id, res.studentId)
+                                    .subscribe((fileres) => {
+                                        this.uploadedFiles = fileres;
+                                    }, (err) => {
+                                        this.uploadedFilesError = err.error.messages;
+                                    })
+                            )
+
+
+
+                            res['employeeId'] = this.tokenService.getUserToken().id;
+
+                            this.applicationForm.patchValue(
+                                res
+                            )
+                        })
                 )
                 // console.log(params)
             })
         )
-        
+
         this.subscribe$.add(
 
             this.commitmentForm.get('duesUpToLastSemester')
-            .valueChanges
-            .map((res)=>{
-                let val = this.commitmentForm.value;
-                let _duesUpToLastSemester = res || 0;
-                let _currentInstallment = val.currentInstallment || 0;
-                let _total = _duesUpToLastSemester + _currentInstallment;
-                return _total;
-            })
-            .subscribe((val)=>{
-                this.commitmentForm.get('totalPayable').patchValue(val);
-            }),
+                .valueChanges
+                .map((res) => {
+                    let val = this.commitmentForm.value;
+                    let _duesUpToLastSemester = res || 0;
+                    let _currentInstallment = val.currentInstallment || 0;
+                    let _total = _duesUpToLastSemester + _currentInstallment;
+                    return _total;
+                })
+                .subscribe((val) => {
+                    this.commitmentForm.get('totalPayable').patchValue(val);
+                }),
 
             this.commitmentForm.get('currentInstallment')
                 .valueChanges
-                .map((res)=>{
+                .map((res) => {
                     let val = this.commitmentForm.value;
                     let _duesUpToLastSemester = val.duesUpToLastSemester || 0;
                     let _currentInstallment = res || 0;
                     let _total = _duesUpToLastSemester + _currentInstallment;
                     return _total;
                 })
-                .subscribe((val)=>{
+                .subscribe((val) => {
                     this.commitmentForm.get('totalPayable').patchValue(val);
                 })
 
-            )
+        )
 
-            
-        
+
+
     }
 
-    
 
-    CalculatePayable(Dues:number, CurrentValue:number){
+
+    CalculatePayable(Dues: number, CurrentValue: number) {
         let val = this.commitmentForm.value;
         let _duesUpToLastSemester = val.duesUpToLastSemester || 0;
         let _currentInstallment = val.currentInstallment || 0;
@@ -249,7 +267,7 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
         return _total;
     }
 
-    RemoveEmptyFormRow(){
+    RemoveEmptyFormRow() {
         let control = this.GetApplicationFormListObject();
         for (let index = 0; index < control.length; index++) {
             const element = control.controls[index];
@@ -258,27 +276,27 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
             }
         }
     }
-    
-    ChangeStatus(e){
+
+    ChangeStatus(e) {
         // this.subscribe$.add(
         //     this.commitmentForm.valueChanges.subscribe(()=>{
-            
+
         //     })
         // )
         //if (e == '2') {
-            let formCrtl = this.GetApplicationFormListObject();
-            const status = this.applicationStatusItems.filter(item=>{return item.id == e});
-            for (let index = 0; index < formCrtl.controls.length; index++) {
-                const formGroup = formCrtl.controls[index];
-                const formGroupValue = formGroup.value;
-                if(formGroupValue.applicationConcernTypeId == 1){
-                    formGroupValue.applicationStatusId = e;
-                    formGroupValue.applicationStatus = status[0];
-                    formGroup.patchValue(formGroupValue);
-                    break;
-                }
+        let formCrtl = this.GetApplicationFormListObject();
+        const status = this.applicationStatusItems.filter(item => { return item.id == e });
+        for (let index = 0; index < formCrtl.controls.length; index++) {
+            const formGroup = formCrtl.controls[index];
+            const formGroupValue = formGroup.value;
+            if (formGroupValue.applicationConcernTypeId == 1) {
+                formGroupValue.applicationStatusId = e;
+                formGroupValue.applicationStatus = status[0];
+                formGroup.patchValue(formGroupValue);
+                break;
             }
-            // console.log(status)
+        }
+        // console.log(status)
         //}
         if (e == '3' || e == '7') {
             this.RemoveEmptyFormRow();
@@ -289,9 +307,9 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
         }
     }
 
-    
 
-    applicationConcernsGroup(){
+
+    applicationConcernsGroup() {
         return {
             id: new FormControl(),
             applicationId: new FormControl(),
@@ -307,15 +325,15 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
         }
     }
 
-    addItem():void{
+    addItem(): void {
         let mainControl = this.applicationForm;
         let control = <FormArray>mainControl.controls['applicationConcerns'];
         let grp = this.fb.group(this.applicationConcernsGroup());
-        control.push( grp );
+        control.push(grp);
 
         //Set Default Value
         // this.applicationForm.get('applicationConcerns').
-        let fg = control.controls[control.controls.length -1] as FormGroup;
+        let fg = control.controls[control.controls.length - 1] as FormGroup;
         // debugger
         fg.get('concernedEmployee').setValidators([Validators.required])
         fg.get('concernedEmployee').updateValueAndValidity();
@@ -326,31 +344,31 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
             "applicationStatus": {
                 "id": "6",
                 "name": "Dispatched"
-              },
-              "applicationConcernTypeId": 2,
-              "applicationConcernType": {
+            },
+            "applicationConcernTypeId": 2,
+            "applicationConcernType": {
                 "id": 2,
                 "name": "Through"
-              }
+            }
         })
         //console.log(fg)
     }
 
-    
+
 
     onItemDeleted(index) {
         let control = this.GetApplicationFormListObject();
         control.removeAt(index);
     }
 
-    GetApplicationFormListObject():FormArray{
+    GetApplicationFormListObject(): FormArray {
         return <FormArray>this.applicationForm.controls['applicationConcerns'];
     }
 
-    IsStatusSelected(statusId){
+    IsStatusSelected(statusId) {
         // debugger
         let controls = this.GetApplicationFormListObject().value;
-        const item = controls.filter(item=>{return item.applicationStatusId == statusId})
+        const item = controls.filter(item => { return item.applicationStatusId == statusId })
         // console.log(item);
         return item.length > 0;
     }
@@ -372,10 +390,10 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
     //     }
     // }
 
-    SaveCommitment(){
+    SaveCommitment() {
         let amount = this.commitmentForm.value.duesUpToLastSemester
         let commitId = this.commitmentForm.value.id;
-        let CommitSubs:Observable<any>;
+        let CommitSubs: Observable<any>;
         if (amount && commitId) {
             //Update
             CommitSubs = this.commitmentService.Put(this.commitmentForm.value, this.commitmentForm.value.id);
@@ -386,23 +404,23 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
         }
         // return CommitSubs
         this.subscribe$.add(
-            CommitSubs.subscribe((res)=>{
-                    this.notify.Success()
-                }, (err)=> {
-                    this.errorList = err.error.messages;
-                    this.notify.Error() 
-                })
+            CommitSubs.subscribe((res) => {
+                this.notify.Success()
+            }, (err) => {
+                this.errorList = err.error.messages;
+                this.notify.Error()
+            })
         )
     }
 
 
-    toggleFlagForSubmitButton:boolean= true;
+    toggleFlagForSubmitButton: boolean = true;
 
-    Submit(){
+    Submit() {
         console.log(this.applicationForm.value)
-        
+
         let appConcernList = this.applicationForm.get('applicationConcerns').value;
-        let appConcern = appConcernList.filter(item=> {return item.concernedEmployeeId == this.tokenService.getUserToken().id})[0]
+        let appConcern = appConcernList.filter(item => { return item.concernedEmployeeId == this.tokenService.getUserToken().id })[0]
         console.log(appConcern)
         let statusId = appConcern.applicationStatusId;
         this.toggleFlagForSubmitButton = false;
@@ -425,21 +443,21 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
         //     }
         // }
 
-        
 
-        
-        
+
+
+
     }
 
-    SaveConsern(){
+    SaveConsern() {
         //this.subscribe$.add(
-            this.applicationPreceedingsService.Save(this.applicationForm.value)
-            .subscribe((res)=>{
-                
+        this.applicationPreceedingsService.Save(this.applicationForm.value)
+            .subscribe((res) => {
+
                 this.notify.Success()
-            }, (err)=> {
+            }, (err) => {
                 this.errorList = err.error.messages;
-                this.notify.Error() 
+                this.notify.Error()
             })
         //)
     }
@@ -452,7 +470,87 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
     //     this.combinedTimers.subscribe(res=>console.log(res))
     // }
 
-    
+    ProcessFile(event) {
+        let fileList: FileList = event.target.files;
+        var promise = new Promise((resolve, reject) => {
+            if (fileList.length > 0) {
+                let file: File = fileList[0];
+                if (file.size > 512000) {
+                    reject(new Error("File size is greater then 500kB"))
+                }
+
+                var reader = new FileReader();
+                reader.onload = () => {
+                    resolve(reader.result);
+                }
+                reader.readAsDataURL(file);
+            }
+
+
+        });
+        return promise;
+    }
+
+
+    CertificateUpload(event) {
+        console.log(this.applicationDetailsForUplodFile)
+        console.log(event)
+
+        this.ProcessFile(event)
+            .then(
+                (res) => {
+                    let fileList: FileList = event.target.files;
+                    console.log(fileList.item(0));
+                    const formData = new FormData();
+
+                    formData.append('ApplicationId', this.applicationDetailsForUplodFile.id);
+                    formData.append('StudentId', this.applicationDetailsForUplodFile.studentId);
+                    formData.append('file', fileList.item(0), fileList.item(0).name);
+
+                    this.certificateService.CertificateUpload(formData).subscribe(
+                        (res) => {
+
+                            this.notify.Success("Successfully Saved Certificate");
+
+                        },
+                        (err) => {
+                            this.notify.Error("Error in Saving Certificate");
+
+                        }
+                    );
+
+
+                }
+                , (err) => {
+                    this.notify.Error(err.message);
+                }
+            );
+    }
+
+    CertificateDownloadDateUpdate() {
+        let DownloadDate;
+        if (this.FileDownloadDate != null) {
+            DownloadDate = this.dateFormatService.ToYearMonthDate(this.FileDownloadDate)
+        }
+        const formData = new FormData();
+
+        formData.append('ApplicationId', this.applicationDetailsForUplodFile.id);
+        formData.append('FileDownloadDate', DownloadDate);
+
+
+        this.certificateService.DownloadDateForCertificate(formData).subscribe(
+            (res) => {
+
+                this.notify.Success("Successfully Saved Certificate Download Date");
+
+            },
+            (err) => {
+                this.notify.Error("Error in Saving Certificate Download Date");
+
+            }
+        );
+    }
+
 }
 
 

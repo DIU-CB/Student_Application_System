@@ -32,6 +32,7 @@ export class CoordinationApplicationSearchFormComponent extends UnsubscribeOnDes
             applicationTypeId: new FormControl(""),
             applicationStatusId: new FormControl("1"),
             appliedOnFrom: new FormControl(""),
+            appliedOnTo: new FormControl(""),
             studentId: new FormControl(""),
             semesterId: new FormControl(""),
             programId: new FormControl(""),
@@ -45,11 +46,19 @@ export class CoordinationApplicationSearchFormComponent extends UnsubscribeOnDes
     }
 
     Submit(){
-        let _date = this.searchForm.value.appliedOnFrom;
-        if (_date) {
-            _date = this.dateFormat.ToYearMonthDate(this.searchForm.value.appliedOnFrom)
-            this.searchForm.value.appliedOnFrom = _date;
+        let _dateFrom = this.searchForm.value.appliedOnFrom;
+        let _dateTo = this.searchForm.value.appliedOnTo;
+
+        if (_dateFrom) {
+            _dateFrom = this.dateFormat.ToYearMonthDate(this.searchForm.value.appliedOnFrom)
+            this.searchForm.value.appliedOnFrom = _dateFrom;
         }
+
+        if (_dateTo) {
+            _dateTo = this.dateFormat.ToYearMonthDate(this.searchForm.value.appliedOnTo)
+            this.searchForm.value.appliedOnTo = _dateTo;
+        }
+
         this.GetValue.emit(this.searchForm.value);
     }
 
@@ -59,6 +68,7 @@ export class CoordinationApplicationSearchFormComponent extends UnsubscribeOnDes
             applicationTypeId: "",
             applicationStatusId: "",
             appliedOnFrom: "",
+            appliedOnTo:"",
             studentId: "",
             semesterId: "",
             programId: "",

@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { MatToolbarModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatSnackBarModule, MatDividerModule, MatProgressSpinnerModule, MatMenuModule, MatSidenavModule } from "@angular/material";
+import { MatNativeDateModule,MatDatepickerModule, MatToolbarModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatSnackBarModule, MatDividerModule, MatProgressSpinnerModule, MatMenuModule, MatSidenavModule } from "@angular/material";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { PopNotificationService } from "src/app/shared/service/pop.notification";
@@ -47,6 +47,8 @@ const _sharedComponent = [
     , MatButtonModule
     , MatIconModule
     , MatCheckboxModule
+    ,MatDatepickerModule
+    ,MatNativeDateModule
   ]
   
   const _sharedAngularFomsModule = [

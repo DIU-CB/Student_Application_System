@@ -72,6 +72,7 @@ export class StudentApplicationFormComponent extends UnsubscribeOnDestroyAdapter
             campusId: new FormControl(""),
             semesterId: new FormControl("", Validators.required),
             paid: new FormControl(null),
+            fileUploaded: new FormControl(null),
 
             files: this.fb.array([
                 //this.filesGroup()
@@ -106,7 +107,7 @@ export class StudentApplicationFormComponent extends UnsubscribeOnDestroyAdapter
         
 
         this.subscribe$.add(
-            this.applicationQuery.Get()
+            this.applicationQuery.GetByApplicationTypeByStudentd()
             .subscribe((res:IApplicationType[])=>{
                 this.applicationTypes = res;
             }),
@@ -193,7 +194,10 @@ export class StudentApplicationFormComponent extends UnsubscribeOnDestroyAdapter
             //console.log(this.applicationTypes.find(c=>c.id==this.applicationForm.get('applicationTypeId').value).applicationFee);
             
             this.applicationForm.patchValue({
-                paid:false
+                paid:false,
+                fileUploaded:false,
+                semesterId:this.semesterList[0].id,
+                campusId:this.campusList[2].id
             });
             //console.log( this.applicationForm.value);
             this.messageForApplicationFee=`You  must pay ${applicationFee} taka to complete the application process`;
@@ -201,7 +205,8 @@ export class StudentApplicationFormComponent extends UnsubscribeOnDestroyAdapter
         }else{
             //console.log( this.applicationForm.value);
             this.applicationForm.patchValue({
-                paid:null
+                paid:null,
+                fileUploaded:null
             });
         }
     }
@@ -293,7 +298,7 @@ export class StudentApplicationFormComponent extends UnsubscribeOnDestroyAdapter
     }
 
     Submit(){
-        // console.log(this.applicationForm.value)
+        //console.log(this.applicationForm.value)
         
         // this.errorMsg = null;
         this.subscribe$.add(

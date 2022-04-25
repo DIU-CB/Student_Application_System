@@ -206,6 +206,27 @@
         <app-student-info-card [dataSource]="applicationDetails?.student"></app-student-info-card>
         <app-student-result-card [studentId]="applicationDetails?.studentId"></app-student-result-card>
         <app-student-payment-status-card [studentId]="applicationDetails?.studentId"></app-student-payment-status-card>
+        
+        <mat-card *ngIf="applicationDetailsForUplodFile?.applicationType?.applicationFor==='Alumni'">
+            <h1 *ngIf="applicationDetailsForUplodFile.fileUploaded==true">File Already Uploaded</h1>
+            <div>
+                <label><b>Certificate Upload</b></label><br><br>
+                    <input mat-stroked-button type="file" name="files" accept="application/pdf" color="accent" (change)="CertificateUpload($event)" />
+            </div><br><br>
+            <mat-form-field>
+                <input matInput [(ngModel)]="FileDownloadDate" [matDatepicker]="picker2" placeholder="Set Download Date">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field><br>
+        <button mat-raised-button color="accent" *ngIf="FileDownloadDate" (click)="CertificateDownloadDateUpdate()">Save Certificate Download Date</button>
+
+        </mat-card>
+
+        <!-- {{FileDownloadDate?.getFullYear()}}
+        {{FileDownloadDate?.getMonth()+1}}
+        {{FileDownloadDate?.getDate()}} -->
+
+        
 
         <!-- <app-file-admin-component
             [studentId]="applicationDetails?.studentId"

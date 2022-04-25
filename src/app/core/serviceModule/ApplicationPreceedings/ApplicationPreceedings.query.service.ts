@@ -34,5 +34,9 @@ export class ApplicationPreceedingsQueryService implements IQueryService{
     );
   }
 
+  GetApplicationByApplicationIdAndStudentId(ApplicationId,StudentId){
+   return this.httpClient.get(this.apiUrl + this.controller + '/GetApplicationByApplicationIdAndStudentId/'+ApplicationId+'/'+StudentId)
+  }
+
 
 }

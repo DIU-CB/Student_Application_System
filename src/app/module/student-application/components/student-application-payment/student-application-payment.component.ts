@@ -26,9 +26,8 @@ import { ApplicationPaymentServiceService } from "src/app/core/serviceModule/App
                 <app-application-details [dataSource]="data"></app-application-details>
             </div>
             <button mat-stroked-button color="accent" (click)="OnApplicationPayment()">Payment</button>
-            <a mat-stroked-button [href]="PaymentURL" *ngIf="PaymentURL!=null" target="_blank" rel="noopener">
-            Click Payment Link
-          </a>
+              
+           
             <button mat-mini-fab (click)="print.printElem('adPrint')" class="ui-float-button">
                 <mat-icon aria-label="Example icon-button with a heart icon">print</mat-icon>
             </button>
@@ -82,8 +81,8 @@ export class StudentApplicationPaymentComponent extends UnsubscribeOnDestroyAdap
       cus_country: "",
       cus_phone: this.data.student.mobile,
       response_type: "json",
-      success: "http://localhost:59968/api/PaymentPush",
-      redirect: "http://192.168.10.227:4202/dashboard/student-application/list",
+      success: "http://203.190.9.108/api.diu.sac.payment/api/PaymentPush",
+      redirect: "http://203.190.9.108/diu-sac/dashboard/student-application/list",
       reff_id: this.data.studentId + "." + this.data.id + "." + Date.now()
     }
     //console.log(this.PaymentBody);
@@ -95,7 +94,8 @@ export class StudentApplicationPaymentComponent extends UnsubscribeOnDestroyAdap
     .subscribe(
       (res:any)=>{
         this.PaymentURL=JSON.parse(res).url;
-        console.log(this.PaymentURL);
+        window.location.href = `${this.PaymentURL}`;
+        
       },
       (err)=>{
         
