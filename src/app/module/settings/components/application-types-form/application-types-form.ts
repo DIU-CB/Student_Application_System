@@ -30,7 +30,9 @@ export class ApplicationTypesFormComponent extends UnsubscribeOnDestroyAdapter i
             dummyApllicationBody: new FormControl(),
             applicationToAddressing: new FormControl("", Validators.required),
             active: new FormControl(true, Validators.required),
-            commitmentRequired: new FormControl(false, Validators.required)
+            commitmentRequired: new FormControl(false, Validators.required),
+            applicationFee: new FormControl(null),
+            applicationFor:new FormControl(null)
         })
 
         //if (this.route.params) {
@@ -62,6 +64,20 @@ export class ApplicationTypesFormComponent extends UnsubscribeOnDestroyAdapter i
             })
         )
         
+    }
+
+    setApplicationFee(amount){
+        if(amount=='Alumni')
+        this.applicationTypeForm.patchValue({
+            applicationFee:50
+        })
+        else{
+            this.applicationTypeForm.patchValue({
+                applicationFee:null
+            })
+        }
+        console.log(amount);
+        console.log(this.applicationTypeForm.value);
     }
 
 }

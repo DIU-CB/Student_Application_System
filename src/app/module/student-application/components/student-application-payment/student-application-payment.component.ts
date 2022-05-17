@@ -1,10 +1,13 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { StudentApplicationQueryService } from "src/app/core/serviceModule/StudentApplication/student.application.query";
 import { PrintService } from "src/app/shared/Print/print.service";
 import { ApplicationQueryService } from "src/app/core/serviceModule/ApplicationQueries/ApplicationQueries.service";
 import { UnsubscribeOnDestroyAdapter } from "src/app/shared/service/unsubscribe-on-destroy-adapter";
 import { ApplicationPaymentServiceService } from "src/app/core/serviceModule/ApplicationPaymentSrvice/application-payment-service.service";
+import { throttleTime } from "rxjs/operators";
+import { Subject, Subscription,Observable } from 'rxjs';
+
 
 
 @Component({
@@ -26,7 +29,7 @@ import { ApplicationPaymentServiceService } from "src/app/core/serviceModule/App
                 <app-application-details [dataSource]="data"></app-application-details>
             </div>
             <button mat-stroked-button color="accent" (click)="OnApplicationPayment()">Payment</button>
-              
+            <circle-loader *ngIf="elableLoader"></circle-loader>
            
             <button mat-mini-fab (click)="print.printElem('adPrint')" class="ui-float-button">
                 <mat-icon aria-label="Example icon-button with a heart icon">print</mat-icon>
@@ -35,10 +38,16 @@ import { ApplicationPaymentServiceService } from "src/app/core/serviceModule/App
     `
   , providers: [PrintService, StudentApplicationQueryService]
 })
-export class StudentApplicationPaymentComponent extends UnsubscribeOnDestroyAdapter implements OnInit {
+export class StudentApplicationPaymentComponent extends UnsubscribeOnDestroyAdapter implements OnInit,OnDestroy {
   data: any;
   PaymentBody;
   PaymentURL:string=null;
+
+  elableLoader=false;
+  Flag=true;
+
+  SubjectObservableForPayment= new Subject();
+  private ActivatedSubscription:Subscription;
   // paymentData:any;
   constructor(
     private applicationService: ApplicationQueryService
@@ -46,12 +55,34 @@ export class StudentApplicationPaymentComponent extends UnsubscribeOnDestroyAdap
     // , private paymentService: StudentDueAndCgpaSummariesQueryService
     , public print: PrintService
     , private paymentService:ApplicationPaymentServiceService
+    
   ) {
     super()
 
   }
 
   ngOnInit() {
+    //Using my own subject observable from rxjs for payment
+   this.ActivatedSubscription= this.SubjectObservableForPayment.pipe(throttleTime(6000)).subscribe(()=>{
+      
+      this.elableLoader=true;
+        this.paymentService.RequestPayment(this.PaymentBody)
+        .subscribe(
+          (res:any)=>{
+            this.PaymentURL=JSON.parse(res).url;
+            this.elableLoader=false;
+            window.location.href = `${this.PaymentURL}`;
+            this.Flag=false; 
+          },
+          (err)=>{
+            
+            console.log(err);
+            this.elableLoader=false;
+            this.Flag=false;
+          }
+          );
+    });
+    
     this.subscribe$.add(
       this.route.params.subscribe((prm) => {
         this.subscribe$.add(
@@ -65,6 +96,11 @@ export class StudentApplicationPaymentComponent extends UnsubscribeOnDestroyAdap
         )
       })
     )
+  }
+
+  ngOnDestroy():void{
+    this.ActivatedSubscription.unsubscribe();
+
   }
 
   SetPaymentBody(amount) {
@@ -88,21 +124,40 @@ export class StudentApplicationPaymentComponent extends UnsubscribeOnDestroyAdap
     //console.log(this.PaymentBody);
 
   }
-
+  
   OnApplicationPayment(){
-    this.paymentService.RequestPayment(this.PaymentBody)
-    .subscribe(
-      (res:any)=>{
-        this.PaymentURL=JSON.parse(res).url;
-        window.location.href = `${this.PaymentURL}`;
-        
-      },
-      (err)=>{
-        
-        console.log(err);
-      }
-      );
+    this.SubjectObservableForPayment.next();
   }
+
+  
+  // OnApplicationPayment(){
+
+  //   if(this.Flag){
+
+  //     this.elableLoader=true;
+  //   this.paymentService.RequestPayment(this.PaymentBody)
+  //   .subscribe(
+  //     (res:any)=>{
+  //       this.PaymentURL=JSON.parse(res).url;
+  //       this.elableLoader=false;
+  //       window.location.href = `${this.PaymentURL}`;
+  //       this.Flag=false; 
+  //     },
+  //     (err)=>{
+        
+  //       console.log(err);
+  //       this.elableLoader=false;
+  //       this.Flag=false;
+  //     }
+  //     );
+
+  //     setTimeout(() => {
+  //       this.Flag=true;
+  //       //console.log("true after 6 second")
+  //     }, 6000);
+  //   }
+    
+  // }
 
 
 

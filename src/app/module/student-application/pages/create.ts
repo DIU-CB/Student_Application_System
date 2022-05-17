@@ -12,7 +12,7 @@ import { Router } from "@angular/router";
                     </div>
                 </mat-toolbar-row>
                 <mat-toolbar-row class="page-title">
-                    Crate New Application
+                    Create New Application
                 </mat-toolbar-row>
             </mat-toolbar>
 
