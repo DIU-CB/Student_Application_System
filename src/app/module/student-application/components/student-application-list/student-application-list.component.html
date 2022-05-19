@@ -47,7 +47,7 @@
             </td>
             <td *ngIf="item.fileUploaded != null">
                 <h3 *ngIf="item.paid == false">Pending</h3>
-                <h3 *ngIf="item.paid == true && item.fileUploaded == false">Document is Peocessing</h3>
+                <h3 *ngIf="item.paid == true && item.fileUploaded == false">Document is Processing</h3>
 
                 <h3 *ngIf="item.fileUploaded == true && item.fileDownloadDate != null">Document is Ready and Last Date of Download: {{item?.fileDownloadDate|date: 'dd/MM/yyyy'}}</h3>
                

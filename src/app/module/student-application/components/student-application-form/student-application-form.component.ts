@@ -140,6 +140,8 @@ export class StudentApplicationFormComponent extends UnsubscribeOnDestroyAdapter
                         studentId: resp.studentId,
                         rowVersion: resp.rowVersion,
                         applicationStatusId: resp.applicationStatusId,
+                        paid:resp.paid,
+                        fileUploaded:resp.fileUploaded
                     });
                     // debugger;
                     if (resp.studentCommitment) {
@@ -307,14 +309,16 @@ export class StudentApplicationFormComponent extends UnsubscribeOnDestroyAdapter
                 // debugger
                 //this.notify.Success();
                 //this.router.navigate[('dashboard/student-application/list')];
+                this.notify.Success();
                 this.routeBackToParent.emit();
                 
                 
 
             }, (err)=>{
+                console.log(err)
                 // debugger
                 this.errorMsg = err.error.messages;
-                if(this.errorMsg==null){
+                if(err.status==201){
                     this.notify.Success();
                     
                     this.routeBackToParent.emit();

@@ -12,7 +12,5 @@ export class ApplicationPaymentServiceService {
     console.log(PaymentBody);
     //const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     return this.http.post('http://203.190.9.108/api.diu.sac.payment/PaymentFromFront',PaymentBody);
-
-    
   }
 }
