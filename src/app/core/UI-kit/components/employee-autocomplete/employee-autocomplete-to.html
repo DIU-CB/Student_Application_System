@@ -12,7 +12,7 @@
     </mat-autocomplete>
 </mat-form-field>
     <!-- <button class="btn btn-success" *ngIf="flag==0 && orderNo.value!=1" (click)="UpdateConcern()">Update Concern</button> orderNumber removed from logic -->
-    <button class="btn btn-success" *ngIf="flag==0 && applicationStatusId.value==6" (click)="UpdateConcern()">Update Concern</button>
+    <button class="btn btn-success" *ngIf="flag==0 && applicationStatusId?.value==6" (click)="UpdateConcern()">Update Concern</button>
     <mat-error *ngIf="itemControl.invalid && (itemControl.dirty || itemControl.touched)">
       <small *ngIf="itemControl.errors?.required">Can't be empty!</small>
     </mat-error>

@@ -6,6 +6,7 @@ import { TokenService } from 'src/app/core/authentication/Services/token.service
 import { ApplicationConcernsUpdateService } from "src/app/core/serviceModule/ApplicationConcerns/application-concerns-update.service";
 import { PopNotificationService } from "src/app/shared/service/pop.notification";
 
+
 @Component({
   selector: 'app-employee-autocomplete-through',
   templateUrl: './employee-autocomplete-to.html',
@@ -24,7 +25,6 @@ export class EmployeeAutocompleteThroughComponent extends EmployeeAutocompleteTo
 
   ngOnInit() {
     this.itemControl.valueChanges
-    .debounceTime(400)
     .subscribe( data => {
       
       if (data) {

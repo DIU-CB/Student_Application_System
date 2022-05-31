@@ -56,9 +56,6 @@
                                         <app-employee-autocomplete-through
                                             *ngIf="!item?.value?.id"
                                             [priamryId]="item.get('concernedEmployeeId')"
-                                            [orderNo]="orderNO.get('defaultOrderNo')"
-                                            [applicationStatusId]="applicationStatusId.get('defaultApplicationStatusId')"
-                                            [applicationId]="item.get('applicationId')"
                                             [priamryKey]=" 'id' "
                                             placeholder="Application Concern"
                                             [itemControl]="item.get('concernedEmployee')">

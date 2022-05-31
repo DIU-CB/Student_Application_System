@@ -87,18 +87,6 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
     ngOnInit() {
 
 
-        this.orderNO = this.fb.group({
-            defaultOrderNo: new FormControl(1)
-        });
-
-        this.applicationStatusId = this.fb.group({
-            defaultApplicationStatusId: new FormControl(1)
-        });
-
-
-
-
-
 
         this.applicationForm = this.fb.group({
             rowVersion: new FormControl(),
