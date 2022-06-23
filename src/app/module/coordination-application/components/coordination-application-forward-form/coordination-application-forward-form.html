@@ -15,7 +15,8 @@
                 <mat-card-title>{{applicationDetails?.applicationType?.name}}</mat-card-title>
                 <mat-card-subtitle>Status: {{applicationDetails?.applicationStatus?.name}}</mat-card-subtitle>
                 <mat-card-subtitle>Semester: {{applicationDetails?.semester?.name}}</mat-card-subtitle>
-                <mat-card-subtitle>Date: {{applicationDetails?.updatedOn | date: 'dd-MMM-yyyy'}}</mat-card-subtitle>
+                <mat-card-subtitle>Date: {{applicationDetails?.appliedOn | date: 'dd-MMM-yyyy'}}</mat-card-subtitle>
+                <mat-card-subtitle>Updated Date: {{applicationDetails?.updatedOn | date: 'dd-MMM-yyyy'}}</mat-card-subtitle>
             </mat-card-header>
         </mat-card>
 

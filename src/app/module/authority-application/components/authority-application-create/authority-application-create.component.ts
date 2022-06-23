@@ -63,7 +63,7 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
     FileDownloadDate: Date;
 
     isAdded: number = 0;
-
+    pdfSrc = "";
     applicationConcernTypes = [
         { id: 1, name: 'To' }
         , { id: 2, name: 'Through' }
@@ -154,6 +154,8 @@ export class AuthorityApplicationProceedFormComponent extends UnsubscribeOnDestr
                                         this.applicationDetailsForUplodFile = res;
                                         if(this.applicationDetailsForUplodFile.fileDownloadDate!=null)
                                         this.FileDownloadDate=new Date(this.applicationDetailsForUplodFile.fileDownloadDate);
+                                        console.log(this.applicationDetailsForUplodFile);
+                                        this.pdfSrc=`http://203.190.9.108/api.diu.sac.cdn/Certificate/${this.applicationDetailsForUplodFile.studentId}/${this.applicationDetailsForUplodFile.id}/${this.applicationDetailsForUplodFile.id}.pdf`;
                                     })
                             )
                             this.subscribe$.add(

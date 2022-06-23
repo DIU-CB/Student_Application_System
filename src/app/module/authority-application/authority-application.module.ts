@@ -19,6 +19,7 @@ import { AuthorityApplicationSearchFormComponent } from "./components/authority-
 import { DetailsComponent } from "./pages/details";
 import { PendingListComponent } from './pages/pending-list/pending-list.component';
 
+
 const _sharedComponent = [
     AuthorityApplicationComponent
     , ProceedComponent
@@ -80,7 +81,8 @@ const _sharedComponent = [
       _MaterialModule,
       AuthorityApplicationRouteModule,
       SharedModule,
-      UIKitModule
+      UIKitModule,
+  
     ]
   })
   export class AuthorityApplicationModule { }

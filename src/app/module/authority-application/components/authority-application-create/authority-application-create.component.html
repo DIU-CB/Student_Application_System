@@ -11,7 +11,8 @@
             <mat-card-header>
                 <mat-card-title>{{applicationDetails?.applicationType?.name}}</mat-card-title>
                 <!-- <mat-card-subtitle>Application Type</mat-card-subtitle> -->
-                <mat-card-subtitle>Date: {{applicationDetails?.updatedOn | date: 'dd-MMM-yyyy'}}</mat-card-subtitle>
+                <mat-card-subtitle>Date: {{applicationDetails?.appliedOn | date: 'dd-MMM-yyyy'}}</mat-card-subtitle>
+                <mat-card-subtitle>Updated Date: {{applicationDetails?.updatedOn | date: 'dd-MMM-yyyy'}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
                 <!-- <p>
@@ -205,7 +206,8 @@
         <app-student-payment-status-card [studentId]="applicationDetails?.studentId"></app-student-payment-status-card>
         
         <mat-card *ngIf="applicationDetailsForUplodFile?.applicationType?.applicationFor==='Alumni'">
-            <h1 *ngIf="applicationDetailsForUplodFile.fileUploaded==true">File Already Uploaded</h1>
+            <h1 *ngIf="applicationDetailsForUplodFile?.fileUploaded==true">File Already Uploaded</h1>
+            <a [href]="pdfSrc" mat-raised-button color="warn" >Preview Uploaded File</a><br>
             <div>
                 <label><b>Certificate Upload</b></label><br><br>
                     <input mat-stroked-button type="file" name="files" accept="application/pdf" color="accent" (change)="CertificateUpload($event)" />
@@ -223,7 +225,13 @@
         {{FileDownloadDate?.getMonth()+1}}
         {{FileDownloadDate?.getDate()}} -->
 
+    <!-- <mat-card *ngIf="applicationDetailsForUplodFile?.fileUploaded==true">
+        <pdf-viewer [src]="pdfSrc"
+        [original-size]="false"
         
+        ></pdf-viewer>
+        <a [href]="pdfSrc" mat-raised-button color="warn" >Preview Uploaded File</a>
+    </mat-card> -->
 
         <!-- <app-file-admin-component
             [studentId]="applicationDetails?.studentId"

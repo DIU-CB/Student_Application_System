@@ -4,7 +4,7 @@ import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { SharedModule } from "src/app/shared/shared.module";
 import { UIKitModule } from "src/app/core/UI-kit/ui.kit.module";
-import { MatToolbarModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, MatButtonModule, MatIconModule, MatSnackBarModule, MatCheckboxModule, MatDividerModule, MatSlideToggleModule } from "@angular/material";
+import { MatToolbarModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, MatButtonModule, MatIconModule, MatSnackBarModule, MatCheckboxModule, MatDividerModule, MatSlideToggleModule , MatDatepickerModule, MatNativeDateModule } from "@angular/material";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { RouteGuard } from "src/app/core/authentication/Services/route.guard";
@@ -44,6 +44,8 @@ const _sharedComponent = [
     , MatButtonModule
     , MatIconModule
     , MatCheckboxModule
+    , MatDatepickerModule
+    , MatNativeDateModule
   ]
   
   const _sharedAngularFomsModule = [

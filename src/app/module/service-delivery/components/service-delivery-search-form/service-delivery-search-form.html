@@ -23,7 +23,17 @@
     </mat-form-field>
 
     <app-semester-select formControlName="semesterId"></app-semester-select>
- 
+    <mat-form-field>
+        <input matInput formControlName="appliedOnFrom" [matDatepicker]="picker" placeholder="Applied On From">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput formControlName="appliedOnTo" [matDatepicker]="picker2" placeholder="Applied On To">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
 
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
         <button mat-raised-button color="primary" [disabled]="searchForm.invalid" (click)="Submit()">Submit</button>
