@@ -173,6 +173,17 @@
         <app-student-result-card [studentId]="applicationDetails?.studentId"></app-student-result-card>
         <app-student-payment-status-card [studentId]="applicationDetails?.studentId"></app-student-payment-status-card>
 
+        <mat-card class="info-card">
+            <mat-card-content>
+                <textarea matInput
+                [ngModel]="applicationComment"
+                (ngModelChange)="applicationComment = $event"
+                placeholder="Leave a Comment for Student"
+                 matTextareaAutosize></textarea>              
+            </mat-card-content>
+            <button mat-raised-button color="primary" (click)="SubmitComment()">Submit Comment</button>
+        </mat-card>
+            
         <app-file-admin-component
             [uploadedFiles]="uploadedFiles"
             [uploadedFilesError]="uploadedFilesError">

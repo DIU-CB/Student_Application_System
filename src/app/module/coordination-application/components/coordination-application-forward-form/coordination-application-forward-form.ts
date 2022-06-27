@@ -16,6 +16,7 @@ import { StudentCommitmentsWriteService } from "src/app/core/serviceModule/Stude
 import { ProgramOfficesQueryService } from "src/app/core/serviceModule/ProgramOffices/ProgramOffices.Query";
 import { UnsubscribeOnDestroyAdapter } from "src/app/shared/service/unsubscribe-on-destroy-adapter";
 import { IStudentApplication } from "src/app/core/serviceModule/StudentApplication/student.application.interface";
+import { ApplicationCommentService } from "src/app/core/serviceModule/ApplicationComment/application-comment.service";
 
 
 @Component({
@@ -38,7 +39,7 @@ export class CoordinationApplicationForwardFormComponent extends UnsubscribeOnDe
     studentDueAndCGPADetails;
     errorList;
     applicationStatusItems;
-
+    applicationComment;
     // programOfficeList: any[];
 
     uploadedFiles;
@@ -56,6 +57,7 @@ export class CoordinationApplicationForwardFormComponent extends UnsubscribeOnDe
         , private mentorsQueryService: MentorsQueryService
         , private commitmentService: StudentCommitmentsWriteService
         , private programOfficeService: ProgramOfficesQueryService
+        , private ApplicationCommentService:ApplicationCommentService
         ){ super(); }
 
     ngOnInit(){
@@ -96,7 +98,7 @@ export class CoordinationApplicationForwardFormComponent extends UnsubscribeOnDe
                     this.applicationStatusItems = res;
                 })
         )
-
+        
             // this.programOfficeService.Get()
             // .subscribe((res:any[])=>{
             //     this.programOfficeList = res;
@@ -174,8 +176,18 @@ export class CoordinationApplicationForwardFormComponent extends UnsubscribeOnDe
                         
                     })
                 )
-                    
+                
+                this.ApplicationCommentService.get(params.id)
+                .subscribe(
+                    (res)=>{
+                        this.applicationComment=res;
+                    },
+                    (err)=>{this.notify.Error()}
+                );
             })
+        
+        
+        
         )
 
         
@@ -396,6 +408,24 @@ export class CoordinationApplicationForwardFormComponent extends UnsubscribeOnDe
                 this.notify.Error()
             })
        )
+    }
+
+    SubmitComment(){
+        
+        let formData= new FormData();
+        formData.append("ApplicationID",this.applicationDetails.id);
+        formData.append("StudentID",this.applicationDetails.studentId);
+        formData.append("Comment",this.applicationComment);
+
+        this.ApplicationCommentService.post(formData)
+        .subscribe(
+            (res)=>{
+                this.notify.Success()
+            },
+            (err)=>{
+                this.notify.Error()
+            }
+        );
     }
 
     

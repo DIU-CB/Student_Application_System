@@ -9,6 +9,8 @@
             <th>SL. No.</th>
             <th>App. Type</th>
             <th>Status</th>
+            <th>Comment</th>
+
             <th>Pyment Status</th>
             
 
@@ -23,6 +25,7 @@
                 
                 <app-status [item]=item?.applicationStatus></app-status>
             </td>
+            <td><b style="color: red;">{{item?.comment}}</b></td>
             <td>
                 <h3 *ngIf="item.paid == false">Not Paid (50tk)</h3>
                 <h3 *ngIf="item.paid == true">Paid (50tk)</h3>
@@ -32,7 +35,9 @@
             </td>
             
             <td>
-                <a  *ngIf="item?.applicationStatusId == '1' || item.fileUploaded != null && item.fileUploaded == false " mat-button color="primary" routerLink="/dashboard/student-application/edit/{{item.id}}">Edit</a>
+                <a  *ngIf="item?.applicationStatusId == '1' " mat-button color="primary" routerLink="/dashboard/student-application/edit/{{item.id}}">Edit</a>
+                <!-- <a  *ngIf="item?.applicationStatusId == '1' || item.fileUploaded != null && item.fileUploaded == false " mat-button color="primary" routerLink="/dashboard/student-application/edit/{{item.id}}">Edit</a> -->
+
                 
 
                 <!-- <button *ngIf="item?.applicationStatusId == '2' " mat-button color="primary" routerLink="/dashboard/student-application/print/{{item.id}}">Print</button> -->

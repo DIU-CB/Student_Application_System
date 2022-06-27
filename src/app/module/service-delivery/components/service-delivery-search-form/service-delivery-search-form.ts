@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { ApplicationTypeQueryService } from "src/app/core/serviceModule/ApplicationType/application-type-queries.query";
+
 import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
 import { UnsubscribeOnDestroyAdapter } from "src/app/shared/service/unsubscribe-on-destroy-adapter";
 import { APPLICATION_TYPE_ID, STUDENT_ID ,CAMPUS_ID,SEMESTER_ID} from "src/app/Classes/SearchParams";
